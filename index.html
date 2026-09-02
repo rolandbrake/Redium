@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UI-example</title>
+    <style>
+      /* the one hand-written stylesheet in the whole project: page reset only */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        overflow-x: hidden;
+        font-family: monospace, system-ui, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="importmap">
+      {
+        "imports": {
+          "redium": "./dist/index.js"
+        }
+      }
+    </script>
+    <!-- The framework mounts itself into document.body — see example/counter.ts -->
+    <script type="module" src="./dist/example/counter.js"></script>
+  </body>
+</html>
