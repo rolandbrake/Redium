@@ -28,6 +28,8 @@ Redium aims to offer a lightweight alternative for developers who want:
 
 Redium is pre-1.0 and under active development. The core primitives work, but APIs may change while the architecture settles. It is best suited for experiments, prototypes, learning, and contributors interested in helping define the library's direction.
 
+See the [documentation](docs/README.md) for the getting-started guide and [unit reference](docs/units.md).
+
 ## Quick example
 
 ```ts

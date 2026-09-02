@@ -5,35 +5,33 @@ function Header() {
         padding: 20,
         style: { background: "#2563eb", color: "#ffffff" },
         children: [
-            Center({
-                child: Row({
-                    gap: 16,
-                    children: [
-                        Text("Redium", {
-                            style: {
-                                width: 0.5,
-                                maxWidth: min("100%", px(240)),
-                                font: 24,
-                                weight: 700,
-                            },
-                        }), // Text
-                        Text(createSelector(() => `Actions: ${actionCount.value}`), {
-                            style: { width: 0.3, font: 16 },
-                        }), // Text
-                        Button("Action", {
-                            onClick: () => {
-                                actionCount.value += 1;
-                            },
-                            style: {
-                                width: 0.2,
-                                // width: min(px(180), "100%"),
-                                background: "#dd2cc6",
-                                color: "#ffffff",
-                            },
-                        }), // Button
-                    ],
-                }), // Row
-            }), // Center
+            Center(Row({
+                gap: 16,
+                children: [
+                    Text("Redium", {
+                        style: {
+                            width: 0.5,
+                            maxWidth: min("100%", px(240)),
+                            font: 24,
+                            weight: 700,
+                        },
+                    }), // Text
+                    Text(createSelector(() => `Actions: ${actionCount.value}`), {
+                        style: { width: 0.3, font: 16 },
+                    }), // Text
+                    Button("Action", {
+                        onClick: () => {
+                            actionCount.value += 1;
+                        },
+                        style: {
+                            width: 0.2,
+                            // width: min(px(180), "100%"),
+                            background: "#dd2cc6",
+                            color: "#ffffff",
+                        },
+                    }), // Button
+                ],
+            })), // Center
         ],
     }); // Container
 } // Header

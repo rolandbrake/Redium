@@ -22,8 +22,7 @@ function Header() {
     padding: 20,
     style: { background: "#2563eb", color: "#ffffff" },
     children: [
-      Center({
-        child: Row({
+      Center(Row({
           gap: 16,
 
           children: [
@@ -54,7 +53,7 @@ function Header() {
             }), // Button
           ],
         }), // Row
-      }), // Center
+      ), // Center
     ],
   }); // Container
 } // Header
