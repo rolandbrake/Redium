@@ -1,8 +1,14 @@
+<p align="center">
+  <img src="crystal.png" alt="Redium crystal" width="180" />
+</p>
+
+
 # Redium
 
 > A small, declarative, JavaScript-first UI library for building reactive interfaces with TypeScript.
 
 Redium is an early-stage experiment in making UI development feel direct and readable. It uses ordinary TypeScript functions instead of JSX, keeps state explicit, and maps a small component API to real DOM elements.
+
 
 The project is intentionally incomplete. That is also the invitation: if you enjoy UI architecture, reactive systems, DOM APIs, or developer tooling, there is plenty of room to shape Redium with us.
 
