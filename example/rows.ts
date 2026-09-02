@@ -26,8 +26,7 @@ function LayoutTest() {
     { label: "ORANGE", color: "#f97316" },
     { label: "TEAL", color: "#14b8a6" },
   ];
-  return Root({
-    body: Grid({
+  return Root(Grid({
       columns: 3,
       wrap: true,
       minColumnWidth: 300,
@@ -35,7 +34,7 @@ function LayoutTest() {
       padding: 16,
       children: [...contents.map((c) => Box(c.label, c.color))],
     }), // Grid
-  }); // Root
+  ); // Root
 }
 
 export const page = mountElement(LayoutTest);

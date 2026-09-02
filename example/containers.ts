@@ -14,8 +14,7 @@ import {
 function ResponsiveExample() {
   const count = state(0);
 
-  return Root({
-    body: Container({
+  return Root(Container({
         padding: 24,
         style: {
           background: "#111827",
@@ -281,8 +280,8 @@ function ResponsiveExample() {
             ],
           }),
         ],
-      }),
-  });
+    }),
+  );
 }
 
 export const page = mountElement(ResponsiveExample);

@@ -1,17 +1,15 @@
 import { ContainerElement } from "../elements/Container.js";
 import type { ContainerOptions } from "../elements/Container.js";
 
-export interface RootOptions extends Omit<ContainerOptions, "children" | "padding"> {
-  body: ContainerElement;
-}
+export type RootOptions = Omit<ContainerOptions, "children" | "padding">;
 
 /** The single application root. Its only child is the supplied body container. */
 export class RootElement extends ContainerElement {
   readonly body: ContainerElement;
 
-  constructor(options: RootOptions) {
+  constructor(body: ContainerElement, options: RootOptions = {}) {
     super(options);
-    this.body = options.body;
+    this.body = body;
     super.add(this.body);
 
     this.style
@@ -35,5 +33,10 @@ export class RootElement extends ContainerElement {
 }
 
 export type Root = RootElement;
-export interface RootFactory { (options: RootOptions): RootElement; new (options: RootOptions): RootElement; }
-export const Root = function(options: RootOptions) { return new RootElement(options); } as RootFactory;
+export interface RootFactory {
+  (body: ContainerElement, options?: RootOptions): RootElement;
+  new (body: ContainerElement, options?: RootOptions): RootElement;
+}
+export const Root = function(body: ContainerElement, options: RootOptions = {}) {
+  return new RootElement(body, options);
+} as RootFactory;

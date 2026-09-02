@@ -141,8 +141,7 @@ function Footer() {
 } // Footer
 
 export function LayoutExample() {
-  return Root({
-    body: Column({
+  return Root(Column({
       gap: 0,
       children: [
         Header(), // Header
@@ -153,7 +152,7 @@ export function LayoutExample() {
         Footer(), // Footer
       ],
     }), // Column
-  }); // Root
+  ); // Root
 } // LayoutExample
 
 export const page = mountElement(LayoutExample); // mountElement

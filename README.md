@@ -30,6 +30,15 @@ Redium is pre-1.0 and under active development. The core primitives work, but AP
 
 See the [documentation](docs/README.md) for the getting-started guide and [unit reference](docs/units.md).
 
+## Building the package
+
+```bash
+npm run typecheck
+npm run build
+```
+
+The build creates bundled ESM and CommonJS files, source maps, and TypeScript declarations in `dist/`. Examples are excluded from the published package.
+
 ## Quick example
 
 ```ts
