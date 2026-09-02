@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="crystal.png" alt="Redium crystal" width="180" />
+  <img src="crystal.png" alt="Redium crystal" width="360" />
 </p>
 
 
@@ -49,6 +49,7 @@ import {
   Text,
   createSelector,
   createState,
+  min,
   mountElement,
 } from "redium";
 
@@ -60,7 +61,7 @@ function Counter() {
     gap: 16,
     padding: [24, 32],
     style: {
-      width: "min(100%, 24rem)",
+      width: min(1, 384),
       background: "white",
       radius: 16,
       shadow: "md",
@@ -142,7 +143,7 @@ const panel = Column({
   padding: [24, 16], // top/bottom: 24px, left/right: 16px
   margin: 12,
   style: {
-    width: "min(100%, 32rem)",
+    width: min(1, 512),
     background: "#fff",
     radius: 12,
     shadow: "lg",
@@ -156,7 +157,7 @@ panel.style
   .background("#ffffff");
 ```
 
-Numeric sizes are interpreted as pixels, except for ratio-aware layout values where the library supports parent-relative numbers. CSS strings such as `"100%"`, `"1rem"`, `"min(100%, 32rem)"`, and `"100vh"` are also supported.
+Numeric sizes are interpreted as pixels, except for values from `0` through `1`, which represent a ratio of the parent dimension. Raw CSS strings are not accepted by the sizing API; use the framework sizing helpers instead.
 
 ### DOM events and element behavior
 
@@ -178,8 +179,8 @@ import { clamp, hex, min, rgba } from "redium";
 
 const accent = hex("#38bdf8");
 const translucent = rgba(15, 23, 42, 0.8);
-const width = clamp(240, "50vw", 720);
-const cardWidth = min("100%", 420);
+const width = clamp(240, 0.5, 720);
+const cardWidth = min(1, 420);
 ```
 
 ## Running the example

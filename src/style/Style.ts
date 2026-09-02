@@ -151,7 +151,7 @@ export class Style {
     return this.raw("display", "grid").raw("place-items", "center");
   }
   fill(): this {
-    return this.width("100%").height("100%");
+    return this.width(1).height(1);
   }
   transition(ms: number, easing = "ease"): this {
     return this.raw("transition", `all ${ms}ms ${easing}`);

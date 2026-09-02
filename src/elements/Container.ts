@@ -57,19 +57,14 @@ export class ContainerElement extends Element {
     if (this.centerLayout)
       this.style.raw("justify-content", "center").raw("align-items", "center");
 
-    if (configuredWidth === undefined) this.style.raw("width", "100%");
+    if (configuredWidth === undefined) this.style.width(1);
     this.applySize("width", options.width);
     this.applySize("height", options.height);
     this.applySize("min-width", options.minWidth);
     this.applySize("max-width", options.maxWidth);
     this.applySize("min-height", options.minHeight);
     this.applySize("max-height", options.maxHeight);
-    this.style.raw(
-      "max-width",
-      options.maxWidth === undefined
-        ? "100%"
-        : (this.style.value("max-width") ?? "100%"),
-    );
+    if (options.maxWidth === undefined) this.style.maxWidth(1);
     this.style.raw("min-width", "0").raw("box-sizing", "border-box");
     if (options.gap !== undefined) this.style.gap(options.gap);
     if (options.padding !== undefined) this.style.pad(options.padding);

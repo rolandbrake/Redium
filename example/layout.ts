@@ -13,7 +13,6 @@ import {
   min,
   max,
   clamp,
-  px,
 } from "../src/index.js";
 
 function Header() {
@@ -29,7 +28,7 @@ function Header() {
             Text("Redium", {
               style: {
                 width: 0.5,
-                maxWidth: min("100%", px(240)),
+                maxWidth: min(1, 240),
                 font: 24,
                 weight: 700,
               },
@@ -46,7 +45,6 @@ function Header() {
               },
               style: {
                 width: 0.2,
-                // width: min(px(180), "100%"),
                 background: "#dd2cc6",
                 color: "#ffffff",
               },
@@ -66,7 +64,7 @@ function Sidebar() {
     padding: 20,
     style: {
       width: 0.2,
-      minWidth: min(px(180), "100%"),
+      minWidth: min(180, 1),
       background: "#dc2626",
       color: "#ffffff",
     },
@@ -81,7 +79,7 @@ function Card(title: string, color: string) {
   return Container({
     padding: 20,
     style: {
-      minWidth: min(px(180), "100%"),
+      minWidth: min(180, 1),
       background: color,
       radius: 12,
       shadow: "sm",
@@ -93,7 +91,7 @@ function Card(title: string, color: string) {
         children: [
           Text(title, { style: { font: 18, weight: 700 } }), // Text
           Text("This card adapts to its grid cell."), // Text
-          Button("Open", { style: { width: "100%" } }), // Button
+          Button("Open", { style: { width: 1 } }), // Button
         ],
       }), // Column
     ],
@@ -112,7 +110,7 @@ function MainSection() {
     gap: 20,
     padding: 24,
     style: {
-      width: max(px(320), 0.8),
+      width: max(320, 0.8),
       background: "#16a34a",
       color: "#ffffff",
     },
@@ -122,7 +120,7 @@ function MainSection() {
       Grid({
         wrap: true,
         columns: 3,
-        minColumnWidth: clamp(px(180), "25vw", px(320)),
+      minColumnWidth: clamp(180, 0.25, 320),
         gap: 16,
         children: contents.map(([content, color]) => Card(content, color)),
       }),

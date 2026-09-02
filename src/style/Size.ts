@@ -1,28 +1,39 @@
 /** Values that can be used by dimensions and CSS sizing functions. */
 export type Relative = number;
 export type Absolute = number;
-export type SizeValue = number | CSSFunction | string;
-export type CSSFunction = string;
+declare const cssFunctionBrand: unique symbol;
+export type CSSFunction = string & { readonly [cssFunctionBrand]: true };
+export type SizeValue = number | CSSFunction;
+const generatedCssValues = new Set<string>();
+
+function cssValue(value: string): CSSFunction {
+  generatedCssValues.add(value);
+  return value as CSSFunction;
+}
 
 function finite(value: number, name: string): number {
   if (!Number.isFinite(value)) throw new Error(`${name} must be a finite number.`);
   return value;
 }
 
-export function px(value: number): string {
-  return `${finite(value, "Pixel value")}px`;
+export function px(value: number): CSSFunction {
+  return cssValue(`${finite(value, "Pixel value")}px`);
 }
 
-export function ratio(value: number): string {
+export function ratio(value: number): CSSFunction {
   finite(value, "Relative value");
   if (value < 0 || value > 1)
     throw new Error("Relative value must be between 0 and 1.");
-  return `${value * 100}%`;
+  return cssValue(`${value * 100}%`);
 }
 
 /** Converts a dimension number: 0..1 is relative, values above 1 are pixels. */
 export function dimension(value: SizeValue, property = "Dimension"): string {
-  if (typeof value !== "number") return value;
+  if (typeof value !== "number") {
+    if (!generatedCssValues.has(value))
+      throw new Error(`${property} must use a Redium sizing helper, not a raw CSS string.`);
+    return value;
+  }
   finite(value, property);
   if (value < 0)
     throw new Error(`${property} cannot be negative.`);
@@ -55,11 +66,11 @@ function valueOf(value: SizeValue): string {
 }
 
 export function min(...values: SizeValue[]): CSSFunction {
-  return `min(${values.map(valueOf).join(", ")})`;
+  return cssValue(`min(${values.map(valueOf).join(", ")})`);
 }
 export function max(...values: SizeValue[]): CSSFunction {
-  return `max(${values.map(valueOf).join(", ")})`;
+  return cssValue(`max(${values.map(valueOf).join(", ")})`);
 }
 export function clamp(minimum: SizeValue, preferred: SizeValue, maximum: SizeValue): CSSFunction {
-  return `clamp(${valueOf(minimum)}, ${valueOf(preferred)}, ${valueOf(maximum)})`;
+  return cssValue(`clamp(${valueOf(minimum)}, ${valueOf(preferred)}, ${valueOf(maximum)})`);
 }
