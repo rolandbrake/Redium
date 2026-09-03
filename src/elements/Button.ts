@@ -19,12 +19,12 @@ export class ButtonElement extends Element {
         : (textOrOptions ?? {});
     super("button", opts);
     this.style
-      .raw("min-width", "5rem")
-      .raw("min-height", "2.75rem")
-      .raw("padding", "0.625rem 1rem")
-      .raw("font-size", "1rem")
-      .raw("line-height", "1.2")
-      .raw("touch-action", "manipulation");
+      .default("min-width", "5rem")
+      .default("min-height", "2.75rem")
+      .default("padding", "0.625rem 1rem")
+      .default("font-size", "1rem")
+      .default("line-height", "1.2")
+      .default("touch-action", "manipulation");
     if (opts.text !== undefined) this.setText(opts.text);
     if (opts.onClick) this.onClick(opts.onClick.bind(this));
     if (State.isState(opts.disabled))

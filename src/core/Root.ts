@@ -1,5 +1,6 @@
 import { ContainerElement } from "../elements/Container.js";
 import type { ContainerOptions } from "../elements/Container.js";
+import { Style } from "../style/Style.js";
 
 export type RootOptions = Omit<ContainerOptions, "children" | "padding">;
 
@@ -8,19 +9,28 @@ export class RootElement extends ContainerElement {
   readonly body: ContainerElement;
 
   constructor(body: ContainerElement, options: RootOptions = {}) {
+    const style = options.style;
+    const hasStyleValue = (property: string, configKey = property): boolean =>
+      style instanceof Style
+        ? style.value(property) !== undefined
+        : style !== undefined && configKey in style;
+    const customWidth = options.width !== undefined || hasStyleValue("width");
+    const customHeight = options.height !== undefined || hasStyleValue("height");
+    const customMaxWidth = options.maxWidth !== undefined || hasStyleValue("max-width", "maxWidth");
+    const customMaxHeight = options.maxHeight !== undefined || hasStyleValue("max-height", "maxHeight");
     super(options);
     this.body = body;
     super.add(this.body);
 
+    if (!customWidth) this.style.raw("width", "100vw");
+    if (!customHeight) this.style.raw("height", "100vh");
+    if (!customMaxWidth) this.style.raw("max-width", "100vw");
+    if (!customMaxHeight) this.style.raw("max-height", "100vh");
     this.style
-      .raw("width", "100vw")
-      .raw("height", "100vh")
-      .raw("max-width", "100vw")
-      .raw("max-height", "100vh")
-      .raw("min-width", "0")
-      .raw("min-height", "0")
-      .raw("overflow-x", "hidden")
-      .raw("overflow-y", "auto");
+      .default("min-width", "0")
+      .default("min-height", "0")
+      .default("overflow-x", "hidden")
+      .default("overflow-y", "auto");
   }
 
   /** Add application content to Root.body, keeping Root's hierarchy fixed. */

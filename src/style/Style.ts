@@ -70,6 +70,10 @@ export class Style {
     this.targets.forEach((t) => t.style.setProperty(prop, value));
     return this;
   }
+  /** Apply a default only when the property was not explicitly configured. */
+  default(prop: string, value: string): this {
+    return this.props.has(prop) ? this : this.raw(prop, value);
+  }
   width(v: SizeValue): this {
     return this.raw("width", dimension(v, "Width"));
   }

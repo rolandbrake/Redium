@@ -74,7 +74,7 @@ function ContainersExample() {
     Column({
       gap: 28,
       padding: 32,
-      style: { width: 0.96, maxWidth: 1100, background: "#f8fafc" },
+      style: { width: 1, maxWidth: 1100, background: "#f8fafc" },
       children: [
         Container({
           children: [

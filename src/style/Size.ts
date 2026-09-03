@@ -1,9 +1,11 @@
+import type { UnitValue } from "./Unit.js";
+
 /** Values that can be used by dimensions and CSS sizing functions. */
 export type Relative = number;
 export type Absolute = number;
 declare const cssFunctionBrand: unique symbol;
 export type CSSFunction = string & { readonly [cssFunctionBrand]: true };
-export type SizeValue = number | CSSFunction;
+export type SizeValue = number | CSSFunction | UnitValue;
 const generatedCssValues = new Set<string>();
 
 function cssValue(value: string): CSSFunction {
@@ -29,6 +31,11 @@ export function ratio(value: number): CSSFunction {
 
 /** Converts a dimension number: 0..1 is relative, values above 1 are pixels. */
 export function dimension(value: SizeValue, property = "Dimension"): string {
+  if (typeof value === "object") {
+    if (value.unit === "ratio") return ratio(value.value);
+    if (value.unit === "px") return px(value.value);
+    return `${value.value}rem`;
+  }
   if (typeof value !== "number") {
     if (!generatedCssValues.has(value))
       throw new Error(`${property} must use a Redium sizing helper, not a raw CSS string.`);
@@ -62,7 +69,7 @@ export function opacity(value: number): string {
 }
 
 function valueOf(value: SizeValue): string {
-  return typeof value === "number" ? dimension(value) : value;
+  return dimension(value);
 }
 
 export function min(...values: SizeValue[]): CSSFunction {

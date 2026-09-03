@@ -5,8 +5,22 @@ export { Root, type RootElement, type RootOptions } from "./core/Root.js";
 export { mountElement, type View } from "./render/render.js";
 
 // State and styling
-export { State, state, createState, effect, createEffect, selector, createSelector } from "./state/State.js";
-export { Style, type StyleConfig, type ShadowSize, type Align } from "./style/Style.js";
+export {
+  State,
+  state,
+  createState,
+  effect,
+  createEffect,
+  selector,
+  createSelector,
+} from "./state/State.js";
+export {
+  Style,
+  type StyleConfig,
+  type ShadowSize,
+  type Align,
+} from "./style/Style.js";
+export { Unit, type UnitKind, type UnitValue } from "./style/Unit.js";
 export {
   px,
   ratio,
@@ -22,7 +36,11 @@ export {
 // Elements
 export { Container, type ContainerOptions } from "./elements/Container.js";
 export { Text, type TextElement } from "./elements/Text.js";
-export { Button, type ButtonOptions, type ButtonElement } from "./elements/Button.js";
+export {
+  Button,
+  type ButtonOptions,
+  type ButtonElement,
+} from "./elements/Button.js";
 
 // Layout
 export { Grid, type GridOptions } from "./layout/Grid.js";

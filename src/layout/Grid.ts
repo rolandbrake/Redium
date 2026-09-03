@@ -13,9 +13,9 @@ export class GridElement extends ContainerElement {
   constructor(options: GridOptions = {}) {
     super(options);
     this.style
-      .raw("display", "grid")
-      .raw("align-items", "stretch")
-      .raw("justify-items", "stretch");
+      .default("display", "grid")
+      .default("align-items", "stretch")
+      .default("justify-items", "stretch");
     this.setColumns(options.columns ?? 1, options.wrap !== false, options.minColumnWidth);
     this.setRows(options.rows);
     this.style.gap(options.gap ?? 0);

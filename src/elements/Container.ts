@@ -39,34 +39,29 @@ export class ContainerElement extends Element {
     this.rowLayout = options.row === true;
     this.wrapLayout = options.wrap ?? true;
     this.centerLayout = options.center === true;
-    const configuredWidth =
-      options.style instanceof Object && !(options.style instanceof Element)
-        ? "width" in options.style
-          ? options.style.width
-          : undefined
-        : undefined;
-
     this.validateRatio("fit", options.fit ?? 1);
     this.validateRatio("fill", options.fill ?? 0);
     this.style
-      .raw("display", "flex")
-      .raw("flex-direction", this.rowLayout ? "row" : "column")
-      .raw("flex-wrap", this.wrapLayout ? "wrap" : "nowrap")
-      .raw("flex-shrink", String(options.fit ?? 1))
-      .raw("flex-grow", String(options.fill ?? 0))
-      .raw("align-items", "stretch")
-      .raw("align-content", "stretch");
+      .default("display", "flex")
+      .default("flex-direction", this.rowLayout ? "row" : "column")
+      .default("flex-wrap", this.wrapLayout ? "wrap" : "nowrap")
+      .default("flex-shrink", String(options.fit ?? 1))
+      .default("flex-grow", String(options.fill ?? 0))
+      .default("align-items", "stretch")
+      .default("align-content", "stretch");
     if (this.centerLayout)
       this.style.raw("justify-content", "center").raw("align-items", "center");
 
-    if (configuredWidth === undefined) this.style.width(1);
+    if (this.style.value("width") === undefined)
+      this.style.width(1);
     this.applySize("width", options.width);
     this.applySize("height", options.height);
     this.applySize("min-width", options.minWidth);
     this.applySize("max-width", options.maxWidth);
     this.applySize("min-height", options.minHeight);
     this.applySize("max-height", options.maxHeight);
-    if (options.maxWidth === undefined) this.style.maxWidth(1);
+    if (options.maxWidth === undefined && this.style.value("max-width") === undefined)
+      this.style.maxWidth(1);
     this.style.raw("box-sizing", "border-box");
     if (options.gap !== undefined) this.style.gap(options.gap);
     if (options.padding !== undefined) this.style.pad(options.padding);

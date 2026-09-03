@@ -24,9 +24,7 @@ export abstract class Element extends Node {
     this.style = (
       options.style instanceof Style ? options.style : new Style(options.style)
     ).bind(this.dom);
-    this.style.raw("box-sizing", "border-box");
-    if (this.style.value("min-width") === undefined)
-      this.style.raw("min-width", "0");
+    this.style.default("box-sizing", "border-box").default("min-width", "0");
     if (options.id) this.dom.id = options.id;
     if (options.className) this.dom.className = options.className;
   }

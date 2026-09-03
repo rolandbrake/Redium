@@ -16,11 +16,41 @@
         overflow-x: hidden;
         font-family: monospace, system-ui, sans-serif;
       }
+
+      .redium-badge {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 1000;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px 8px 8px;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
+        color: #0f172a;
+        font: 600 12px/1 system-ui, sans-serif;
+        letter-spacing: 0.01em;
+        pointer-events: none;
+        backdrop-filter: blur(8px);
+      }
+
+      .redium-badge img {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+      }
     </style>
   </head>
   <body>
     <!-- Vite transforms the TypeScript example and aliases redium to src during development. -->
     <!-- The framework mounts itself into document.body - see example/counter.ts -->
-    <script type="module" src="/example/containers.ts"></script>
+    <script type="module" src="/example/counter.ts"></script>
+    <div class="redium-badge" aria-label="Powered by Redium">
+      <img src="./redium.png" alt="Redium" />
+      <span>Powered by Redium</span>
+    </div>
   </body>
 </html>
