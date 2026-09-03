@@ -20,6 +20,7 @@ export {
   Align,
 } from "./style/Style.js";
 export { Shadow, type ShadowFactory, type ShadowValue } from "./style/Shadow.js";
+export { Border, BorderStyle, type BorderFactory, type BorderValue } from "./style/Border.js";
 export { Unit, type UnitKind, type UnitValue } from "./style/Unit.js";
 export {
   px,

@@ -44,48 +44,54 @@ Use `npm run dev` to serve the example application with Vite and HMR. Do not ope
 
 ```ts
 import {
+  Root,
   Button,
   Column,
   Row,
   Text,
-  createSelector,
   createState,
   min,
   mountElement,
   Shadow,
   Colors,
+  Center,
 } from "redium";
 
-function Counter() {
+const Counter = () => {
   const count = createState(0);
-  const doubled = createSelector(() => count.value * 2);
 
-  return Column({
-    gap: 16,
-    padding: [24, 32],
-    style: {
-      width: min(1, 384),
-      background: Colors.white,
-      radius: 16,
-      shadow: Shadow.md,
-    },
-    children: [
-      Text(count, { style: { font: 48, weight: 700 } }),
-      Text(doubled.map((value) => `Double: ${value}`)),
-      Row({
-        gap: 8,
-        center: true,
-        children: [
-          Button("-", { onClick: () => count.value-- }),
-          Button("Reset", { onClick: () => (count.value = 0) }),
-          Button("+", { onClick: () => count.value++ }),
-        ],
-      }),
-    ],
-  });
-}
+  return Center(
+    Column({
+      gap: 16,
+      padding: [24, 32],
+      style: {
+        width: min(1, 384),
+        background: Colors.white,
+        radius: 16,
+        shadow: Shadow.md,
+      },
+      children: [
+        Center(Text(count, { style: { font: 48, weight: 700 } })),
+        Row({
+          gap: 8,
+          center: true,
+          children: [
+            Button("-", { onClick: () => count.value-- }),
+            Button("Reset", { onClick: () => (count.value = 0) }),
+            Button("+", { onClick: () => count.value++ }),
+          ],
+        }), // Row
+      ],
+    }), // Column
+  ); // Center
+};
 
-mountElement(Counter);
+mountElement(
+  Root(Counter(), {
+    style: { background: Colors.gray },
+  }),
+);
+
 ```
 
 State updates automatically notify subscribers, and `Text` can render a state directly. Derived values are created with `createSelector`.

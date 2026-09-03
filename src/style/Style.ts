@@ -1,6 +1,7 @@
 import { State } from "../state/State.js";
 import { dimension, fontSize, opacity as opacityValue, pixels, type SizeValue } from "./Size.js";
 import type { ShadowValue } from "./Shadow.js";
+import type { BorderValue } from "./Border.js";
 
 export const Align = Object.freeze({
   start: "start",
@@ -26,6 +27,7 @@ export interface StyleConfig {
   color?: string;
   radius?: number;
   shadow?: ShadowValue;
+  border?: BorderValue;
   gap?: number;
   opacity?: number;
   cursor?: string;
@@ -136,8 +138,9 @@ export class Style {
   cursor(v: string): this {
     return this.raw("cursor", v);
   }
-  border(width: number, color: string): this {
-    return this.raw("border", `${pixels(width, "Border width")} solid ${color}`);
+  border(v: BorderValue): this {
+    if (v.kind !== "border") throw new Error("Invalid border value.");
+    return this.raw("border", `${pixels(v.width, "Border width")} ${v.style} ${v.color}`);
   }
   font(size: number, weight?: number, family?: string): this {
     if (weight !== undefined) this.raw("font-weight", String(weight));
