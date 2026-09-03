@@ -5,6 +5,7 @@ import {
   Column,
   Root,
   Row,
+  Shadow,
   Text,
   createSelector,
   mountElement,
@@ -48,7 +49,7 @@ function PlanCard(plan: Plan, selections: ReturnType<typeof state<number>>) {
       background: Color.white,
       color: "#0f172a",
       radius: 14,
-      shadow: "sm",
+      shadow: Shadow.sm,
     },
     children: [
       Text(plan.name, { style: { font: 22, weight: 700, color: plan.color } }),

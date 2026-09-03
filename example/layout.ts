@@ -6,6 +6,7 @@ import {
   Row,
   Column,
   Root,
+  Shadow,
   Text,
   clamp,
   createState,
@@ -80,7 +81,7 @@ function MetricCard(label: string, value: string, accent: string) {
       background: colors.surface,
       color: colors.text,
       radius: 12,
-      shadow: "sm",
+      shadow: Shadow.sm,
     },
     children: [
       Text(label, { style: { font: 14, color: colors.muted } }),
@@ -120,7 +121,7 @@ function MainContent() {
       }),
       Container({
         padding: 20,
-        style: { background: colors.surface, color: colors.text, radius: 12, shadow: "sm" },
+        style: { background: colors.surface, color: colors.text, radius: 12, shadow: Shadow.sm },
         children: [
           Text("Recent activity", { style: { font: 20, weight: 700 } }),
           Text("The dashboard stays readable as the viewport changes.", {

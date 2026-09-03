@@ -1,8 +1,15 @@
 import { State } from "../state/State.js";
 import { dimension, fontSize, opacity as opacityValue, pixels, type SizeValue } from "./Size.js";
+import type { ShadowValue } from "./Shadow.js";
 
-export type ShadowSize = "sm" | "md" | "lg" | "xl";
-export type Align = "start" | "center" | "end" | "between" | "around";
+export const Align = Object.freeze({
+  start: "start",
+  center: "center",
+  end: "end",
+  between: "between",
+  around: "around",
+} as const);
+export type Align = (typeof Align)[keyof typeof Align];
 export type SpacingValue =
   | number
   | string
@@ -18,7 +25,7 @@ export interface StyleConfig {
   background?: string;
   color?: string;
   radius?: number;
-  shadow?: ShadowSize;
+  shadow?: ShadowValue;
   gap?: number;
   opacity?: number;
   cursor?: string;
@@ -27,12 +34,6 @@ export interface StyleConfig {
   padding?: SpacingValue;
   margin?: SpacingValue;
 }
-const shadows: Record<ShadowSize, string> = {
-  sm: "0 1px 2px rgba(0,0,0,.05)",
-  md: "0 4px 6px rgba(0,0,0,.1)",
-  lg: "0 10px 15px rgba(0,0,0,.1)",
-  xl: "0 20px 25px rgba(0,0,0,.15)",
-};
 const justify: Record<Align, string> = {
   start: "start",
   center: "center",
@@ -121,8 +122,13 @@ export class Style {
   radius(v: number): this {
     return this.raw("border-radius", pixels(v, "Radius"));
   }
-  shadow(v: ShadowSize): this {
-    return this.raw("box-shadow", shadows[v]);
+  shadow(v: ShadowValue): this {
+    if (v.kind !== "shadow") throw new Error("Invalid shadow value.");
+    const inset = v.inset ? "inset " : "";
+    return this.raw(
+      "box-shadow",
+      `${inset}${v.x}px ${v.y}px ${v.blur}px ${v.spread}px ${v.color}`,
+    );
   }
   opacity(v: number): this {
     return this.raw("opacity", opacityValue(v));
@@ -141,12 +147,12 @@ export class Style {
   weight(value: number): this {
     return this.raw("font-weight", String(value));
   }
-  row(align: Align = "start"): this {
+  row(align: Align = Align.start): this {
     return this.raw("display", "grid")
       .raw("grid-auto-flow", "column")
       .raw("justify-content", justify[align]);
   }
-  column(align: Align = "start"): this {
+  column(align: Align = Align.start): this {
     return this.raw("display", "grid")
       .raw("grid-auto-flow", "row")
       .raw("justify-content", justify[align]);

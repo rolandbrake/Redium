@@ -7,6 +7,7 @@ import {
   createSelector,
   mountElement,
   min,
+  Shadow,
 } from "redium";
 
 
@@ -20,7 +21,7 @@ export function Counter() {
       width: min(0.99, 400),
       background: "#ffffff",
       radius: 20,
-      shadow: "lg",
+      shadow: Shadow.lg,
     },
     children: [
       Text("COUNTER", {

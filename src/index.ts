@@ -17,9 +17,9 @@ export {
 export {
   Style,
   type StyleConfig,
-  type ShadowSize,
-  type Align,
+  Align,
 } from "./style/Style.js";
+export { Shadow, type ShadowFactory, type ShadowValue } from "./style/Shadow.js";
 export { Unit, type UnitKind, type UnitValue } from "./style/Unit.js";
 export {
   px,

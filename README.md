@@ -52,6 +52,7 @@ import {
   createState,
   min,
   mountElement,
+  Shadow,
 } from "redium";
 
 function Counter() {
@@ -65,7 +66,7 @@ function Counter() {
       width: min(1, 384),
       background: "white",
       radius: 16,
-      shadow: "md",
+      shadow: Shadow.md,
     },
     children: [
       Text(count, { style: { font: 48, weight: 700 } }),
@@ -147,7 +148,7 @@ const panel = Column({
     width: min(1, 512),
     background: "#fff",
     radius: 12,
-    shadow: "lg",
+    shadow: Shadow.lg,
     weight: 600,
   },
 });
