@@ -30,6 +30,7 @@ function Header() {
     children: [
       Row({
         gap: 16,
+        wrap: true,
         children: [
           Text("Redium Dashboard", {
             style: { width: 0.6, font: 22, weight: 700 },

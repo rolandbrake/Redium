@@ -29,6 +29,7 @@ export class ContainerElement extends Element {
   protected readonly canContainChildren = true;
   private readonly originalWidths = new Map<Element, string | undefined>();
   private readonly rowLayout: boolean;
+  private readonly wrapLayout: boolean;
   private readonly centerLayout: boolean;
   private observer?: ResizeObserver;
   private childrenAreWrapped = false;
@@ -36,6 +37,7 @@ export class ContainerElement extends Element {
   constructor(options: ContainerOptions = {}) {
     super("div", options);
     this.rowLayout = options.row === true;
+    this.wrapLayout = options.wrap ?? true;
     this.centerLayout = options.center === true;
     const configuredWidth =
       options.style instanceof Object && !(options.style instanceof Element)
@@ -49,7 +51,7 @@ export class ContainerElement extends Element {
     this.style
       .raw("display", "flex")
       .raw("flex-direction", this.rowLayout ? "row" : "column")
-      .raw("flex-wrap", (options.wrap ?? true) ? "wrap" : "nowrap")
+      .raw("flex-wrap", this.wrapLayout ? "wrap" : "nowrap")
       .raw("flex-shrink", String(options.fit ?? 1))
       .raw("flex-grow", String(options.fill ?? 0))
       .raw("align-items", "stretch")
@@ -65,12 +67,12 @@ export class ContainerElement extends Element {
     this.applySize("min-height", options.minHeight);
     this.applySize("max-height", options.maxHeight);
     if (options.maxWidth === undefined) this.style.maxWidth(1);
-    this.style.raw("min-width", "0").raw("box-sizing", "border-box");
+    this.style.raw("box-sizing", "border-box");
     if (options.gap !== undefined) this.style.gap(options.gap);
     if (options.padding !== undefined) this.style.pad(options.padding);
     if (options.margin !== undefined) this.style.margin(options.margin);
     if (options.children) this.add(...options.children);
-    if (this.rowLayout && (options.wrap ?? true)) this.watchWrapping();
+    if (this.rowLayout) this.watchRowLayout();
   }
 
   private validateRatio(name: string, value: number): void {
@@ -87,14 +89,15 @@ export class ContainerElement extends Element {
     return dimension(value, property);
   }
 
-  private watchWrapping(): void {
+  /** Recalculate relative row widths after accounting for gaps and margins. */
+  private watchRowLayout(): void {
     if (typeof ResizeObserver === "undefined") return;
-    this.observer = new ResizeObserver(() => this.updateWrappedChildren());
+    this.observer = new ResizeObserver(() => this.updateRowChildren());
     this.observer.observe(this.dom);
-    queueMicrotask(() => this.updateWrappedChildren());
+    queueMicrotask(() => this.updateRowChildren());
   }
 
-  private updateWrappedChildren(): void {
+  private updateRowChildren(): void {
     const children = this.children.filter(
       (child): child is Element => child instanceof Element,
     );
@@ -109,6 +112,7 @@ export class ContainerElement extends Element {
       else child.style.raw("width", width);
     });
     this.applyRelativeWidths(children);
+    if (!this.wrapLayout) return;
     const firstTop = children[0].dom.getBoundingClientRect().top;
     const wrapped = children.some(
       (child) => Math.abs(child.dom.getBoundingClientRect().top - firstTop) > 1,

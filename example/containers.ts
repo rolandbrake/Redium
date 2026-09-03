@@ -19,9 +19,24 @@ type Plan = {
 };
 
 const plans: Plan[] = [
-  { name: "Starter", description: "For small experiments and personal projects.", price: "$0", color: Color.blue },
-  { name: "Team", description: "For teams building and shipping together.", price: "$18", color: Color.purple },
-  { name: "Scale", description: "For products that need room to grow.", price: "$42", color: Color.green },
+  {
+    name: "Starter",
+    description: "For small experiments and personal projects.",
+    price: "$0",
+    color: Color.blue,
+  },
+  {
+    name: "Team",
+    description: "For teams building and shipping together.",
+    price: "$18",
+    color: Color.purple,
+  },
+  {
+    name: "Scale",
+    description: "For products that need room to grow.",
+    price: "$42",
+    color: Color.green,
+  },
 ];
 
 function PlanCard(plan: Plan, selections: ReturnType<typeof state<number>>) {
