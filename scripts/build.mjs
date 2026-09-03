@@ -17,29 +17,33 @@ const declarations = spawnSync(tsc, ["-p", "tsconfig.build.json"], {
 if (declarations.status !== 0)
   throw new Error("TypeScript declaration build failed.");
 
-await Promise.all([
-  build({
-    absWorkingDir: root,
-    entryPoints: ["./index.ts"],
-    bundle: true,
-    format: "esm",
-    platform: "browser",
-    target: "es2020",
-    outfile: "dist/index.js",
-    sourcemap: true,
-    minify: true,
-  }),
-  build({
-    absWorkingDir: root,
-    entryPoints: ["./index.ts"],
-    bundle: true,
-    format: "cjs",
-    platform: "browser",
-    target: "es2020",
-    outfile: "dist/index.cjs",
-    sourcemap: true,
-    minify: true,
-  }),
-]);
+const entries = ["index", "core", "render", "elements", "state", "style", "colors"];
+
+await Promise.all(
+  entries.flatMap((entry) => [
+    build({
+      absWorkingDir: root,
+      entryPoints: [`./${entry}.ts`],
+      bundle: true,
+      format: "esm",
+      platform: "browser",
+      target: "es2020",
+      outfile: `dist/${entry}.js`,
+      sourcemap: true,
+      minify: true,
+    }),
+    build({
+      absWorkingDir: root,
+      entryPoints: [`./${entry}.ts`],
+      bundle: true,
+      format: "cjs",
+      platform: "browser",
+      target: "es2020",
+      outfile: `dist/${entry}.cjs`,
+      sourcemap: true,
+      minify: true,
+    }),
+  ]),
+);
 
 console.log("Built bundled ESM, CommonJS, and TypeScript declarations.");

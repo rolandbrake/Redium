@@ -44,10 +44,10 @@ export {
 } from "./elements/Button.js";
 
 // Layout
-export { Grid, type GridOptions } from "./layout/Grid.js";
-export { Row, type RowOptions } from "./layout/Row.js";
-export { Column, type ColumnOptions } from "./layout/Column.js";
-export { Center, type CenterOptions } from "./layout/Center.js";
+export { Grid, type GridOptions } from "./elements/Grid.js";
+export { Row, type RowOptions } from "./elements/Row.js";
+export { Column, type ColumnOptions } from "./elements/Column.js";
+export { Center, type CenterOptions } from "./elements/Center.js";
 
 // Utilities
 export { Color, rgb, rgba, hex, type RGB, type RGBA } from "./utils/Color.js";

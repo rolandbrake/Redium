@@ -8,5 +8,14 @@
     "emitDeclarationOnly": true,
     "noEmit": false
   },
-  "include": ["index.ts", "src"]
+  "include": [
+    "index.ts",
+    "core.ts",
+    "render.ts",
+    "elements.ts",
+    "state.ts",
+    "style.ts",
+    "colors.ts",
+    "src"
+  ]
 }

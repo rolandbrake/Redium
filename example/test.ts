@@ -1,17 +1,9 @@
-import {
-  Root,
-  Button,
-  Column,
-  Row,
-  Text,
-  createState,
-  min,
-  mountElement,
-  Shadow,
-  Colors,
-  Center,
-  Border
-} from "redium";
+import { Root } from "redium/core";
+import { mountElement } from "redium/render";
+import { Button, Center, Column, Row, Text } from "redium/elements";
+import { createState } from "redium/state";
+import { Border, min, Shadow } from "redium/style";
+import { Colors } from "redium/colors";
 
 const Counter = () => {
   const count = createState(0);
@@ -33,7 +25,11 @@ const Counter = () => {
           gap: 8,
           center: true,
           children: [
-            Button("-", { onClick: () => count.value-- }),
+            Button("-", {
+              onClick: () => {
+                if (count.value > 0) count.value--;
+              },
+            }),
             Button("Reset", { onClick: () => (count.value = 0) }),
             Button("+", { onClick: () => count.value++ }),
           ],

@@ -17,6 +17,36 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./core": {
+      "types": "./dist/types/core.d.ts",
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs"
+    },
+    "./render": {
+      "types": "./dist/types/render.d.ts",
+      "import": "./dist/render.js",
+      "require": "./dist/render.cjs"
+    },
+    "./elements": {
+      "types": "./dist/types/elements.d.ts",
+      "import": "./dist/elements.js",
+      "require": "./dist/elements.cjs"
+    },
+    "./state": {
+      "types": "./dist/types/state.d.ts",
+      "import": "./dist/state.js",
+      "require": "./dist/state.cjs"
+    },
+    "./style": {
+      "types": "./dist/types/style.d.ts",
+      "import": "./dist/style.js",
+      "require": "./dist/style.cjs"
+    },
+    "./colors": {
+      "types": "./dist/types/colors.d.ts",
+      "import": "./dist/colors.js",
+      "require": "./dist/colors.cjs"
     }
   },
   "scripts": {
@@ -25,6 +55,7 @@
     "build": "node scripts/build.mjs"
   },
   "devDependencies": {
+    "esbuild": "^0.28.2",
     "vite": "^8.2.2"
   }
 }
