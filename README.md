@@ -33,11 +33,12 @@ See the [documentation](docs/README.md) for the getting-started guide and [unit 
 ## Building the package
 
 ```bash
+npm run dev
 npm run typecheck
 npm run build
 ```
 
-The build creates bundled ESM and CommonJS files, source maps, and TypeScript declarations in `dist/`. Examples are excluded from the published package.
+Use `npm run dev` to serve the example application with Vite and HMR. Do not open `index.html` through a static server that does not transform TypeScript. The production build creates bundled ESM and CommonJS files, source maps, and TypeScript declarations in `dist/`. Examples are excluded from the published package.
 
 ## Quick example
 
@@ -119,11 +120,11 @@ function Welcome() {
 
 ### Layout primitives
 
-- `Container` — flexible base container
-- `Column` — vertical layout
-- `Row` — horizontal layout
-- `Grid` — grid layout with responsive columns
-- `Center` — centers one child
+- `Container` - flexible base container
+- `Column` - vertical layout
+- `Row` - horizontal layout
+- `Grid` - grid layout with responsive columns
+- `Center` - centers one child
 
 ```ts
 Grid({

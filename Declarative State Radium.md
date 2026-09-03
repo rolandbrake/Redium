@@ -2,7 +2,7 @@ Absolutely. Since you want everything we've discussed consolidated, I’d struct
 
 I can’t attach a file directly from this chat, but here is the complete content you can save as `framework-architecture.md`:
 
-# Custom UI Framework — Architecture & API Design
+# Custom UI Framework - Architecture & API Design
 
 ## 1. Vision
 
@@ -1646,7 +1646,7 @@ This represents the desired direction of the framework.
 
 # 42. Recommended Development Phases
 
-## Phase 1 — Reactive Core
+## Phase 1 - Reactive Core
 
 Implement:
 
@@ -1669,7 +1669,7 @@ const doubled = computed(
 
 ---
 
-## Phase 2 — Renderer
+## Phase 2 - Renderer
 
 Implement:
 
@@ -1695,7 +1695,7 @@ Column({
 
 ---
 
-## Phase 3 — UI Primitives
+## Phase 3 - UI Primitives
 
 Implement:
 
@@ -1711,7 +1711,7 @@ Implement:
 
 ---
 
-## Phase 4 — Styling
+## Phase 4 - Styling
 
 Implement:
 
@@ -1733,7 +1733,7 @@ Implement:
 
 ---
 
-## Phase 5 — Component System
+## Phase 5 - Component System
 
 Implement:
 
@@ -1746,7 +1746,7 @@ Implement:
 
 ---
 
-## Phase 6 — Store
+## Phase 6 - Store
 
 Implement:
 
@@ -1761,7 +1761,7 @@ Implement:
 
 ---
 
-## Phase 7 — Async
+## Phase 7 - Async
 
 Implement:
 
@@ -1775,7 +1775,7 @@ Implement:
 
 ---
 
-## Phase 8 — Application Infrastructure
+## Phase 8 - Application Infrastructure
 
 Implement separately:
 
@@ -1793,7 +1793,7 @@ Implement separately:
 
 The framework should follow several rules.
 
-## Rule 1 — Keep common operations short
+## Rule 1 - Keep common operations short
 
 Good:
 
@@ -1811,7 +1811,7 @@ new ReactiveState({
 
 ---
 
-## Rule 2 — Prefer composition
+## Rule 2 - Prefer composition
 
 Good:
 
@@ -1826,7 +1826,7 @@ Column({
 
 ---
 
-## Rule 3 — Keep state separate from DOM
+## Rule 3 - Keep state separate from DOM
 
 Prefer:
 
@@ -1842,7 +1842,7 @@ element.textContent = "...";
 
 ---
 
-## Rule 4 — Make simple things simple
+## Rule 4 - Make simple things simple
 
 A counter should not require:
 
@@ -1860,7 +1860,7 @@ const count = state(0);
 
 ---
 
-## Rule 5 — Make advanced features optional
+## Rule 5 - Make advanced features optional
 
 Large applications can use:
 

@@ -27,12 +27,12 @@ export function Counter() {
         style: { font: 13, weight: 700, color: "#64748b" },
       }),
       Text(count, { style: { font: 64, weight: 700, color: "#0f172a" } }),
-      Text(
-        doubled.map((value) => `Double: ${value}`),
-        {
-          style: { font: 15, color: "#64748b" },
-        },
-      ),
+      // Text(
+      //   doubled.map((value) => `Double: ${value}`),
+      //   {
+      //     style: { font: 15, color: "#64748b" },
+      //   },
+      // ),
       Row({
         gap: 12,
         center: true,

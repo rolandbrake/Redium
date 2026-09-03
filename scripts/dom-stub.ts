@@ -1,9 +1,9 @@
 /**
- * A deliberately minimal fake `document`/`window` — just enough surface
+ * A deliberately minimal fake `document`/`window` - just enough surface
  * area (createElement, appendChild, style.setProperty, addEventListener,
  * dispatchEvent) for the framework to run its real logic without an
  * actual browser. This is NOT a replacement for testing in a real
- * browser — it exists only to sanity-check that the framework's own
+ * browser - it exists only to sanity-check that the framework's own
  * code doesn't throw. For real projects, use jsdom/happy-dom + Vitest.
  */
 class FakeStyle {
@@ -58,7 +58,7 @@ export class FakeElement {
   removeEventListener(type: string, fn: (payload?: unknown) => void) {
     this.listeners.get(type)?.delete(fn);
   }
-  /** Not a real Event — just enough to trigger listeners for the smoke test. */
+  /** Not a real Event - just enough to trigger listeners for the smoke test. */
   dispatchEvent(type: string, payload: unknown = {}) {
     this.listeners.get(type)?.forEach((fn) => fn(payload));
   }

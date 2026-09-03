@@ -1,156 +1,149 @@
 import {
-  Root,
-  Column,
-  Center,
-  Row,
-  Grid,
-  Container,
-  Text,
   Button,
+  Color,
+  Container,
+  Grid,
+  Row,
+  Column,
+  Root,
+  Text,
+  clamp,
   createState,
-  createSelector,
   mountElement,
   min,
   max,
-  clamp,
 } from "../src/index.js";
 
+const colors = {
+  background: "#f8fafc",
+  surface: "#ffffff",
+  text: "#0f172a",
+  muted: "#64748b",
+};
+
 function Header() {
-  const actionCount = createState(0);
+  const notifications = createState(0);
+
   return Container({
-    padding: 20,
-    style: { background: "#2563eb", color: "#ffffff" },
+    padding: [18, 24],
+    style: { background: Color.blue, color: Color.white },
     children: [
-      Center(Row({
-          gap: 16,
-
-          children: [
-            Text("Redium", {
-              style: {
-                width: 0.5,
-                maxWidth: min(1, 240),
-                font: 24,
-                weight: 700,
-              },
-            }), // Text
-            Text(
-              createSelector(() => `Actions: ${actionCount.value}`),
-              {
-                style: { width: 0.3, font: 16 },
-              },
-            ), // Text
-            Button("Action", {
-              onClick: () => {
-                actionCount.value += 1;
-              },
-              style: {
-                width: 0.2,
-                background: "#dd2cc6",
-                color: "#ffffff",
-              },
-            }), // Button
-          ],
-        }), // Row
-      ), // Center
-    ],
-  }); // Container
-} // Header
-
-function Sidebar() {
-  const items = ["Dashboard", "Products", "Customers", "Settings"];
-  return Column({
-    wrap: true,
-    gap: 16,
-    padding: 20,
-    style: {
-      width: 0.2,
-      minWidth: min(180, 1),
-      background: "#dc2626",
-      color: "#ffffff",
-    },
-    children: [
-      Text("Navigation", { style: { font: 20, weight: 700 } }), // Text
-      ...items.map((item) => Text(item)), // Text
-    ],
-  }); // Column
-} // Sidebar
-
-function Card(title: string, color: string) {
-  return Container({
-    padding: 20,
-    style: {
-      minWidth: min(180, 1),
-      background: color,
-      radius: 12,
-      shadow: "sm",
-      color: "#ffffff",
-    },
-    children: [
-      Column({
-        gap: 8,
-        children: [
-          Text(title, { style: { font: 18, weight: 700 } }), // Text
-          Text("This card adapts to its grid cell."), // Text
-          Button("Open", { style: { width: 1 } }), // Button
-        ],
-      }), // Column
-    ],
-  }); // Container
-} // Card
-
-function MainSection() {
-  const contents = [
-    ["Content A", "#15803d"],
-    ["Content B", "#166534"],
-    ["Content C", "#14532d"],
-  ];
-
-  return Column({
-    wrap: true,
-    gap: 20,
-    padding: 24,
-    style: {
-      width: max(320, 0.8),
-      background: "#16a34a",
-      color: "#ffffff",
-    },
-    children: [
-      Text("Main Section", { style: { font: 28, weight: 700 } }),
-      Text("Resize the browser to see the layout adapt."),
-      Grid({
-        wrap: true,
-        columns: 3,
-      minColumnWidth: clamp(180, 0.25, 320),
+      Row({
         gap: 16,
-        children: contents.map(([content, color]) => Card(content, color)),
+        children: [
+          Text("Redium Dashboard", {
+            style: { width: 0.6, font: 22, weight: 700 },
+          }),
+          Text(
+            notifications.map((value) => `${value} notifications`),
+            { style: { width: 0.25, font: 14 } },
+          ),
+          Button("Notify", {
+            onClick: () => notifications.value++,
+            style: {
+              width: 0.15,
+              background: Color.white,
+              color: Color.blue,
+            },
+          }),
+        ],
       }),
     ],
   });
 }
 
-function Footer() {
+function Sidebar() {
+  return Row({
+    gap: 16,
+    padding: 20,
+    style: {
+      width: 0.22,
+      minWidth: min(180, 1),
+      background: Color.slate,
+      color: Color.white,
+    },
+    children: [
+      Text("Workspace", { style: { font: 18, weight: 700 } }),
+      Text("Overview"),
+      Text("Projects"),
+      Text("Activity"),
+      Text("Settings"),
+    ],
+  });
+}
+
+function MetricCard(label: string, value: string, accent: string) {
   return Container({
     padding: 20,
-    style: { background: "#9333ea", color: "#ffffff" },
+    style: {
+      background: colors.surface,
+      color: colors.text,
+      radius: 12,
+      shadow: "sm",
+    },
     children: [
-      Text("Footer", { style: { font: 16, weight: 700 } }), // Text
+      Text(label, { style: { font: 14, color: colors.muted } }),
+      Text(value, { style: { font: 28, weight: 700, color: accent } }),
     ],
-  }); // Container
-} // Footer
+  });
+}
 
-export function LayoutExample() {
-  return Root(Column({
-      gap: 0,
+function MainContent() {
+  return Column({
+    gap: 20,
+    padding: 24,
+    style: {
+      width: max(320, 0.78),
+      background: colors.background,
+      color: colors.text,
+    },
+    children: [
+      Container({
+        children: [
+          Text("Overview", { style: { font: 28, weight: 700 } }),
+          Text("A small dashboard composed from Redium layout primitives.", {
+            style: { font: 15, color: colors.muted },
+          }),
+        ],
+      }),
+      Grid({
+        columns: 3,
+        wrap: true,
+        minColumnWidth: clamp(180, 0.25, 320),
+        gap: 16,
+        children: [
+          MetricCard("Active projects", "12", Color.blue),
+          MetricCard("Completed tasks", "84", Color.green),
+          MetricCard("Team members", "08", Color.purple),
+        ],
+      }),
+      Container({
+        padding: 20,
+        style: { background: colors.surface, color: colors.text, radius: 12, shadow: "sm" },
+        children: [
+          Text("Recent activity", { style: { font: 20, weight: 700 } }),
+          Text("The dashboard stays readable as the viewport changes.", {
+            style: { font: 15, color: colors.muted },
+          }),
+        ],
+      }),
+    ],
+  });
+}
+
+function LayoutExample() {
+  return Root(
+    Column({
       children: [
-        Header(), // Header
+        Header(),
         Row({
           wrap: true,
-          children: [Sidebar(), MainSection()],
-        }), // Row
-        Footer(), // Footer
+          gap: 16,
+          children: [Sidebar(), MainContent()],
+        }),
       ],
-    }), // Column
-  ); // Root
-} // LayoutExample
+    }),
+  );
+}
 
-export const page = mountElement(LayoutExample); // mountElement
+export const page = mountElement(LayoutExample);
