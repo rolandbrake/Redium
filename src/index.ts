@@ -50,3 +50,4 @@ export { Center, type CenterOptions } from "./layout/Center.js";
 
 // Utilities
 export { Color, rgb, rgba, hex, type RGB, type RGBA } from "./utils/Color.js";
+export { Colors, type BuiltinColor } from "./utils/Colors.js";

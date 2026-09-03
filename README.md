@@ -53,6 +53,7 @@ import {
   min,
   mountElement,
   Shadow,
+  Colors,
 } from "redium";
 
 function Counter() {
@@ -64,7 +65,7 @@ function Counter() {
     padding: [24, 32],
     style: {
       width: min(1, 384),
-      background: "white",
+      background: Colors.white,
       radius: 16,
       shadow: Shadow.md,
     },
