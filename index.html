@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
 
-    <title>Redium</title>        
+    <title>Redium</title>
     <style>
       /* the one hand-written stylesheet in the whole project: page reset only */
       html,
       body {
         margin: 0;
-        padding: 0;        
+        padding: 0;
         height: 100vh;
         overflow-x: hidden;
         font-family: monospace, system-ui, sans-serif;
@@ -31,7 +31,9 @@
         background: rgba(255, 255, 255, 0.94);
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
         color: #0f172a;
-        font: 600 12px/1 system-ui, sans-serif;
+        font:
+          600 12px/1 system-ui,
+          sans-serif;
         letter-spacing: 0.01em;
         pointer-events: none;
         backdrop-filter: blur(8px);
@@ -47,7 +49,10 @@
   <body>
     <!-- Vite transforms the TypeScript example and aliases redium to src during development. -->
     <!-- The framework mounts itself into document.body - see example/counter.ts -->
-    <script type="module" src="/example/test.ts"></script>
+    <script type="module" src="/example/layout.ts"></script>
+    <!-- The framework is bundled into redium.js and aliased to redium during development. -->
+
+    <!-- The badge is not part of the framework, but a convenience for users to know what they are using. -->
     <div class="redium-badge" aria-label="Powered by Redium">
       <img src="./redium.png" alt="Redium" />
       <span>Powered by Redium</span>
