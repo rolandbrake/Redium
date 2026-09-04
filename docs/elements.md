@@ -14,7 +14,7 @@ Container({
 });
 ```
 
-Options include `children`, dimensions, `padding`, `margin`, `gap`, `row`, `wrap`, `center`, `fit`, and `fill`.
+Options include `children`, dimensions, `padding`, `margin`, `gap`, `row`, `wrap`, `center`, `shrink`, and `grow`.
 
 ## `Text`
 

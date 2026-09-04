@@ -1,4 +1,4 @@
-import { Container, Root, Text, mountElement } from "../src/index.js";
+import { Container, Root, Text, mountElement } from "redium";
 
 function Panel(title: string, body: string, color: string) {
   return Container({
@@ -10,10 +10,7 @@ function Panel(title: string, body: string, color: string) {
       radius: 12,
       minHeight: 96,
     },
-    children: [
-      Text(title, { style: { font: 18, weight: 700 } }),
-      Text(body),
-    ],
+    children: [Text(title, { style: { font: 18, weight: 700 } }), Text(body)],
   });
 }
 
@@ -31,7 +28,11 @@ function ContainerStudy() {
           gap: 12,
           children: [
             Panel("A", "Row mode", "#fecdd3"),
-            Panel("B", "Children share one line until space runs out.", "#bfdbfe"),
+            Panel(
+              "B",
+              "Children share one line until space runs out.",
+              "#bfdbfe",
+            ),
           ],
         }),
         Container({
@@ -39,12 +40,31 @@ function ContainerStudy() {
           wrap: true,
           gap: 12,
           children: [
-            Container({ width: 0.48, padding: 16, style: { background: "#fde68a", radius: 12 }, children: [Text("48% child")] }),
-            Container({ width: 0.48, padding: 16, style: { background: "#bbf7d0", radius: 12 }, children: [Text("48% child")] }),
-            Container({ width: 0.48, padding: 16, style: { background: "#c4b5fd", radius: 12 }, children: [Text("Wraps on narrow screens")] }),
+            Container({
+              width: 0.48,
+              padding: 16,
+              style: { background: "#fde68a", radius: 12 },
+              children: [Text("48% child")],
+            }),
+            Container({
+              width: 0.48,
+              padding: 16,
+              style: { background: "#bbf7d0", radius: 12 },
+              children: [Text("48% child")],
+            }),
+            Container({
+              width: 0.48,
+              padding: 16,
+              style: { background: "#c4b5fd", radius: 12 },
+              children: [Text("Wraps on narrow screens")],
+            }),
           ],
         }),
-        Panel("Nested container", "Every container creates a local layout context for its own children.", "#e0e7ff"),
+        Panel(
+          "Nested container",
+          "Every container creates a local layout context for its own children.",
+          "#e0e7ff",
+        ),
       ],
     }),
   );

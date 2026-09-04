@@ -10,7 +10,9 @@ Column({ children: [Text("Top"), Text("Bottom")] });
 Center(Text("Centered"));
 ```
 
-`Row` is horizontal, `Column` is vertical, and both disable wrapping by default. `Center` accepts one child and centers it without changing the child's own layout.
+`Row` is horizontal and responsive, while `Column` is vertical. `Row` wraps by default; pass `wrap: false` when a single line is required. `Center` accepts one child and centers it without changing the child's own layout.
+
+Use `grow` to control how a child consumes remaining space and `shrink` to control how it gives up space when the parent becomes smaller. Both values are ratios from `0` to `1`.
 
 ## Grid
 

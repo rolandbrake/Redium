@@ -1,9 +1,9 @@
-import { Root, Grid, Container, Text, mountElement } from "../src/index.js";
+import { Root, Grid, Container, Text, mountElement } from "redium";
 
 function Box(label: string, color: string) {
   return Container({
-    fit: 1,
-    fill: 1,
+    shrink: 1,
+    grow: 1,
     padding: 24,
     style: {
       background: color,

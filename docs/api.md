@@ -19,6 +19,11 @@
 - `Container`, `Text`, `Button`
 - `Row`, `Column`, `Center`, `Grid`
 
+`Container` is a responsive vertical flex container by default. `Row` is a
+responsive horizontal container and wraps by default; `Column` is a vertical
+non-wrapping convenience container. `Grid` uses CSS Grid with responsive
+columns when `minColumnWidth` is provided.
+
 ## Styling and sizing
 
 - `Style`

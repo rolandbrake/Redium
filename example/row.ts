@@ -1,4 +1,4 @@
-import { Container, Root, Row, Text, mountElement } from "../src/index.js";
+import { Container, Root, Row, Text, mountElement } from "redium";
 
 function Item(label: string, width: number, color: string) {
   return Container({
@@ -17,7 +17,7 @@ function RowStudy() {
       style: { background: "#f8fafc", color: "#172033" },
       children: [
         Text("Row behavior", { style: { font: 28, weight: 700 } }),
-        Text("Rows are horizontal and do not wrap by default."),
+        Text("Rows are horizontal and wrap by default."),
         Row({
           gap: 12,
           children: [

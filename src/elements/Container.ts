@@ -12,14 +12,14 @@ export interface ContainerOptions extends ElementOptions {
   minHeight?: SizeValue;
   maxHeight?: SizeValue;
   /** Flex shrink ratio. Defaults to 1. */
-  fit?: number;
+  shrink?: number;
   /** Flex grow ratio. Defaults to 0. */
-  fill?: number;
+  grow?: number;
   padding?: SpacingValue;
   margin?: SpacingValue;
   gap?: number;
   row?: boolean;
-  /** Container defaults to true; Row and Column wrappers default to false. */
+  /** Container and Row default to wrapping; Column disables it for vertical stacks. */
   wrap?: boolean;
   center?: boolean;
 }
@@ -39,28 +39,30 @@ export class ContainerElement extends Element {
     this.rowLayout = options.row === true;
     this.wrapLayout = options.wrap ?? true;
     this.centerLayout = options.center === true;
-    this.validateRatio("fit", options.fit ?? 1);
-    this.validateRatio("fill", options.fill ?? 0);
+    this.validateRatio("shrink", options.shrink ?? 1);
+    this.validateRatio("grow", options.grow ?? 0);
     this.style
       .default("display", "flex")
       .default("flex-direction", this.rowLayout ? "row" : "column")
       .default("flex-wrap", this.wrapLayout ? "wrap" : "nowrap")
-      .default("flex-shrink", String(options.fit ?? 1))
-      .default("flex-grow", String(options.fill ?? 0))
+      .default("flex-shrink", String(options.shrink ?? 1))
+      .default("flex-grow", String(options.grow ?? 0))
       .default("align-items", "stretch")
       .default("align-content", "stretch");
     if (this.centerLayout)
       this.style.raw("justify-content", "center").raw("align-items", "center");
 
-    if (this.style.value("width") === undefined)
-      this.style.width(1);
+    if (this.style.value("width") === undefined) this.style.width(1);
     this.applySize("width", options.width);
     this.applySize("height", options.height);
     this.applySize("min-width", options.minWidth);
     this.applySize("max-width", options.maxWidth);
     this.applySize("min-height", options.minHeight);
     this.applySize("max-height", options.maxHeight);
-    if (options.maxWidth === undefined && this.style.value("max-width") === undefined)
+    if (
+      options.maxWidth === undefined &&
+      this.style.value("max-width") === undefined
+    )
       this.style.maxWidth(1);
     this.style.raw("box-sizing", "border-box");
     if (options.gap !== undefined) this.style.gap(options.gap);

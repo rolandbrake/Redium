@@ -1,4 +1,4 @@
-import { Grid, Root, Text, Container, mountElement } from "../src/index.js";
+import { Grid, Root, Text, Container, mountElement } from "redium";
 
 function Tile(number: number, color: string) {
   return Container({

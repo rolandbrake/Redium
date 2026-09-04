@@ -6,6 +6,9 @@ export class TextElement extends Element {
     options: ElementOptions = {},
   ) {
     super("span", options);
+    // Block layout makes width, wrapping, and alignment predictable when
+    // Text is used outside a flex/grid formatting context.
+    this.style.default("display", "block");
     if (State.isState(content))
       content.subscribe((value) => (this.text = String(value)));
     else this.text = String(content);

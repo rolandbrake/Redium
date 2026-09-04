@@ -71,7 +71,7 @@ import {
   State,
   rgba,
   hex,
-} from "../src/index.js";
+} from "redium";
 
 const count = new createState(0);
 
@@ -191,7 +191,7 @@ import {
   state,
   createSelector,
   mount,
-} from "../src/index.js";
+} from "redium";
 ```
 
 Components become ordinary functions:
@@ -1400,7 +1400,7 @@ Then the browser entry:
 // client.js
 
 import { AppView } from "./App.js";
-import { mount } from "../src/index.js";
+import { mount } from "redium";
 
 mountElement(AppView);
 ```
@@ -1533,7 +1533,7 @@ import {
   createSelector,
   store,
   mount,
-} from "../src/index.js";
+} from "redium";
 
 const app = createStore({
   user: {

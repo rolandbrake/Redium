@@ -1,4 +1,4 @@
-import { Column, Container, Root, Text, mountElement } from "../src/index.js";
+import { Column, Container, Root, Text, mountElement } from "redium";
 
 function Section(title: string, description: string, color: string) {
   return Container({

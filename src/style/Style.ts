@@ -1,5 +1,11 @@
 import { State } from "../state/State.js";
-import { dimension, fontSize, opacity as opacityValue, pixels, type SizeValue } from "./Size.js";
+import {
+  dimension,
+  fontSize,
+  opacity as opacityValue,
+  pixels,
+  type SizeValue,
+} from "./Size.js";
 import type { ShadowValue } from "./Shadow.js";
 import type { BorderValue } from "./Border.js";
 
@@ -48,6 +54,8 @@ const justify: Record<Align, string> = {
 export class Style {
   private targets = new Set<HTMLElement>();
   private props = new Map<string, string>();
+  private defaults = new Set<string>();
+  private writingDefault = false;
   constructor(config: StyleConfig = {}) {
     Object.entries(config).forEach(([key, value]) => {
       if (value !== undefined)
@@ -70,12 +78,21 @@ export class Style {
 
   raw(prop: string, value: string): this {
     this.props.set(prop, value);
+    if (!this.writingDefault) this.defaults.delete(prop);
     this.targets.forEach((t) => t.style.setProperty(prop, value));
     return this;
   }
   /** Apply a default only when the property was not explicitly configured. */
   default(prop: string, value: string): this {
-    return this.props.has(prop) ? this : this.raw(prop, value);
+    // A later component may replace an earlier library default (for example,
+    // Grid replacing Container's flex display), but never replaces a user
+    // value supplied through the Style API.
+    if (this.props.has(prop) && !this.defaults.has(prop)) return this;
+    this.writingDefault = true;
+    this.raw(prop, value);
+    this.writingDefault = false;
+    this.defaults.add(prop);
+    return this;
   }
   width(v: SizeValue): this {
     return this.raw("width", dimension(v, "Width"));
@@ -100,13 +117,17 @@ export class Style {
   pad(v: SpacingValue, h?: number): this {
     return this.raw(
       "padding",
-      h === undefined ? this.spacing(v) : `${this.spacing(v)} ${pixels(h, "Padding")}`,
+      h === undefined
+        ? this.spacing(v)
+        : `${this.spacing(v)} ${pixels(h, "Padding")}`,
     );
   }
   margin(v: SpacingValue, h?: number): this {
     return this.raw(
       "margin",
-      h === undefined ? this.spacing(v, true) : `${this.spacing(v, true)} ${pixels(h, "Margin", true)}`,
+      h === undefined
+        ? this.spacing(v, true)
+        : `${this.spacing(v, true)} ${pixels(h, "Margin", true)}`,
     );
   }
   padding(v: SpacingValue): this {
@@ -140,7 +161,10 @@ export class Style {
   }
   border(v: BorderValue): this {
     if (v.kind !== "border") throw new Error("Invalid border value.");
-    return this.raw("border", `${pixels(v.width, "Border width")} ${v.style} ${v.color}`);
+    return this.raw(
+      "border",
+      `${pixels(v.width, "Border width")} ${v.style} ${v.color}`,
+    );
   }
   font(size: number, weight?: number, family?: string): this {
     if (weight !== undefined) this.raw("font-weight", String(weight));
