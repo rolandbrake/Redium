@@ -12,8 +12,9 @@ const Counter = () => {
     Column({
       gap: 16,
       padding: [24, 32],
+      margin: [0, 24],
       style: {
-        width: min(1, 384),
+        width: min(1, 300),
         background: Colors.white,
         radius: 16,
         border: Border(2, Colors.black),
@@ -44,3 +45,4 @@ mountElement(
     style: { background: Colors.gray },
   }),
 );
+

@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="crystal.png" alt="Redium crystal" width="360" />
+  <a href="https://rediumjs.netlify.app/">
+    <img src="crystal.png" alt="Redium crystal" width="360" />
+  </a>
 </p>
 
 

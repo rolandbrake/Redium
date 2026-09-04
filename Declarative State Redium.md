@@ -1,7 +1,3 @@
-Absolutely. Since you want everything we've discussed consolidated, I’d structure the Markdown as a **framework architecture/design document**, including the original API, declarative direction, component model, reactivity, `state()`, `computed()`, the Redux-like `store()`, rendering, lifecycle, async state, forms, routing, styling, and the proposed architecture.
-
-I can’t attach a file directly from this chat, but here is the complete content you can save as `framework-architecture.md`:
-
 # Custom UI Framework - Architecture & API Design
 
 ## 1. Vision
@@ -31,7 +27,7 @@ The framework should allow developers to describe UI using ordinary JavaScript w
 
 The framework should have a simple mental model:
 
-> **Components describe UI. State describes data. Computed values describe relationships. Stores manage shared application state. The renderer updates the DOM.**
+> **Components describe UI. State describes data. createSelector values describe relationships. Stores manage shared application state. The renderer updates the DOM.**
 
 A developer should be able to understand an application by looking at its component structure.
 
@@ -39,7 +35,7 @@ For example:
 
 ```js
 function Counter() {
-  const count = state(0);
+  const count = createState(0);
 
   return Column({
     children: [
@@ -77,7 +73,7 @@ import {
   hex,
 } from "../src/index.js";
 
-const count = new State(0);
+const count = new createState(0);
 
 const label = new Text(count);
 
@@ -122,7 +118,7 @@ const page = new Root({
 page.style.pad(48);
 
 if (typeof document !== "undefined") {
-  page.mount();
+  page.mountElement();
 }
 ```
 
@@ -193,7 +189,7 @@ import {
   Text,
   Button,
   state,
-  computed,
+  createSelector,
   mount,
 } from "../src/index.js";
 ```
@@ -202,7 +198,7 @@ Components become ordinary functions:
 
 ```js
 export function Counter() {
-  const count = state(0);
+  const count = createState(0);
 
   return Column({
     children: [
@@ -236,9 +232,9 @@ A good target syntax is:
 
 ```js
 export function Counter() {
-  const count = state(0);
+  const count = createState(0);
 
-  const doubled = computed(
+  const doubled = createSelector(
     () => count.value * 2
   );
 
@@ -293,7 +289,7 @@ export function AppView() {
   });
 }
 
-const page = mount(AppView);
+const page = mountElement(AppView);
 
 export { page };
 ```
@@ -318,14 +314,14 @@ AppView
 The framework should provide a lightweight reactive primitive:
 
 ```js
-const count = state(0);
+const count = createState(0);
 ```
 
 A component can use it directly:
 
 ```js
 function Counter() {
-  const count = state(0);
+  const count = createState(0);
 
   return Column({
     children: [
@@ -343,18 +339,18 @@ function Counter() {
 
 The important rule is:
 
-> `state()` should normally be used for state that belongs to one component or a small part of the UI.
+> `createState()` should normally be used for state that belongs to one component or a small part of the UI.
 
 ---
 
-# 9. Computed State
+# 9. createSelector State
 
 The framework should provide derived reactive values:
 
 ```js
-const count = state(0);
+const count = createState(0);
 
-const doubled = computed(
+const doubled = createSelector(
   () => count.value * 2
 );
 ```
@@ -400,7 +396,7 @@ State
 Reactive Graph
   │
   ▼
-Computed Values
+createSelector Values
   │
   ▼
 Components
@@ -530,21 +526,21 @@ The framework should support multiple levels of state.
 The three main primitives could be:
 
 ```js
-state()
-computed()
-store()
+createState()
+createSelector()
+createStore()
 ```
 
 ### Local state
 
 ```js
-const count = state(0);
+const count = createState(0);
 ```
 
 ### Derived state
 
 ```js
-const doubled = computed(
+const doubled = createSelector(
   () => count.value * 2
 );
 ```
@@ -552,7 +548,7 @@ const doubled = computed(
 ### Shared application state
 
 ```js
-const auth = store({
+const auth = createStore({
   user: null,
   loading: false,
 });
@@ -560,7 +556,7 @@ const auth = store({
 
 The mental model becomes:
 
-> **State is local. Store is shared. Computed derives values.**
+> **State is local. Store is shared. createSelector derives values.**
 
 ---
 
@@ -571,7 +567,7 @@ A Redux-like store can be added for shared application state.
 Example:
 
 ```js
-const app = store({
+const app = createStore({
   user: null,
   theme: "dark",
   sidebarOpen: true,
@@ -602,7 +598,7 @@ Rather than forcing developers to use traditional Redux reducers everywhere, the
 Example:
 
 ```js
-const counter = store({
+const counter = createStore({
   count: 0,
 
   actions: {
@@ -666,17 +662,17 @@ This keeps the component clean.
 
 ---
 
-# 18. Store Computed Values
+# 18. Store createSelector Values
 
 Stores should support derived values.
 
 Example:
 
 ```js
-const cart = store({
+const cart = createStore({
   items: [],
 
-  computed: {
+  createSelector: {
     total(state) {
       return state.items.reduce(
         (sum, item) => sum + item.price,
@@ -720,7 +716,7 @@ Actions should be able to perform asynchronous work.
 Example:
 
 ```js
-const auth = store({
+const auth = createStore({
   user: null,
   loading: false,
   error: null,
@@ -820,7 +816,7 @@ This is one of the most important requirements.
 Suppose:
 
 ```js
-const app = store({
+const app = createStore({
   user: {...},
   theme: "dark",
   notifications: [],
@@ -874,7 +870,7 @@ The framework should clearly distinguish between local and global state.
 
 ```js
 function Counter() {
-  const count = state(0);
+  const count = createState(0);
 }
 ```
 
@@ -890,7 +886,7 @@ Use for:
 ### Store
 
 ```js
-const auth = store({
+const auth = createStore({
   user: null,
 });
 ```
@@ -993,10 +989,10 @@ Instead, use reactive state:
 
 ```js
 function Example() {
-  const clicked = state(false);
+  const clicked = createState(false);
 
   return Button(
-    computed(() =>
+    createSelector(() =>
       clicked.value
         ? "Clicked!"
         : "Click me"
@@ -1016,7 +1012,7 @@ The relationship becomes:
 clicked
    │
    ▼
-computed
+createSelector
    │
    ▼
 Button text
@@ -1035,13 +1031,13 @@ Large applications need lifecycle management.
 Potential APIs:
 
 ```js
-onMount(() => {
+onmountElement(() => {
   // setup
 });
 ```
 
 ```js
-onUnmount(() => {
+onUnmountElement(() => {
   // cleanup
 });
 ```
@@ -1057,10 +1053,10 @@ onUpdate(() => {
 Example:
 
 ```js
-onMount(() => {
+onmountElement(() => {
   const socket = connect();
 
-  onUnmount(() => {
+  onUnmountElement(() => {
     socket.close();
   });
 });
@@ -1121,7 +1117,7 @@ Forms are important for serious applications.
 A basic input could look like:
 
 ```js
-const email = state("");
+const email = createState("");
 
 Input({
   value: email,
@@ -1209,7 +1205,7 @@ A possible internal rendering architecture:
 The renderer should understand dependencies between:
 
 * State
-* Computed values
+* createSelector values
 * Components
 * DOM nodes
 
@@ -1224,10 +1220,10 @@ The framework could use dependency tracking.
 Example:
 
 ```js
-const firstName = state("John");
-const lastName = state("Smith");
+const firstName = createState("John");
+const lastName = createState("Smith");
 
-const fullName = computed(
+const fullName = createSelector(
   () =>
     `${firstName.value} ${lastName.value}`
 );
@@ -1283,7 +1279,7 @@ Potential features:
 Application
 ├── Components
 ├── State
-├── Computed
+├── createSelector
 ├── Stores
 ├── Actions
 ├── Events
@@ -1317,7 +1313,7 @@ Stores could optionally support persistence.
 Example:
 
 ```js
-const settings = store({
+const settings = createStore({
   theme: "dark",
   language: "en",
 }, {
@@ -1343,7 +1339,7 @@ Advanced stores could support middleware.
 For example:
 
 ```js
-const store = createStore({
+const store = createcreateStore({
   middleware: [
     logger(),
     persist(),
@@ -1379,7 +1375,7 @@ Instead of:
 const page =
   typeof document === "undefined"
     ? AppView()
-    : mount(AppView);
+    : mountElement(AppView);
 ```
 
 it may be cleaner to separate application code from the runtime entry point.
@@ -1406,7 +1402,7 @@ Then the browser entry:
 import { AppView } from "./App.js";
 import { mount } from "../src/index.js";
 
-mount(AppView);
+mountElement(AppView);
 ```
 
 This keeps components environment-independent.
@@ -1418,8 +1414,8 @@ This keeps components environment-independent.
 A possible core API:
 
 ```js
-state()
-computed()
+createState()
+createSelector()
 effect()
 
 Column()
@@ -1433,16 +1429,16 @@ Input()
 Image()
 
 component()
-mount()
+mountElement()
 
-onMount()
-onUnmount()
+onmountElement()
+onUnmountElement()
 ```
 
 Application-level APIs:
 
 ```js
-store()
+createStore()
 resource()
 router()
 ```
@@ -1470,7 +1466,7 @@ A possible overall architecture:
           ┌─────────────────┼─────────────────┐
           │                 │                 │
           ▼                 ▼                 ▼
-       state()          computed()         store()
+       createState()          createSelector()         createStore()
           │                 │                 │
           └─────────────────┼─────────────────┘
                             ▼
@@ -1501,7 +1497,7 @@ The state layer could be:
           ┌───────────────┼───────────────┐
           │               │               │
           ▼               ▼               ▼
-       state()        computed()       effect()
+       createState()        createSelector()       effect()
           │               │               │
           └───────────────┼───────────────┘
                           │
@@ -1512,10 +1508,10 @@ The state layer could be:
 The store builds on the same reactive primitives:
 
 ```text
-store()
+createStore()
   │
   ├── state
-  ├── computed
+  ├── createSelector
   ├── actions
   ├── subscriptions
   └── middleware
@@ -1534,12 +1530,12 @@ import {
   Text,
   Button,
   state,
-  computed,
+  createSelector,
   store,
   mount,
 } from "../src/index.js";
 
-const app = store({
+const app = createStore({
   user: {
     name: "John",
   },
@@ -1557,9 +1553,9 @@ const app = store({
 });
 
 export function Counter() {
-  const count = state(0);
+  const count = createState(0);
 
-  const doubled = computed(
+  const doubled = createSelector(
     () => count.value * 2
   );
 
@@ -1593,7 +1589,7 @@ export function Counter() {
 }
 
 export function AppView() {
-  const clicked = state(false);
+  const clicked = createState(false);
 
   return Column({
     padding: 48,
@@ -1603,7 +1599,7 @@ export function AppView() {
       Text(app.user.name),
 
       Button(
-        computed(() =>
+        createSelector(() =>
           clicked.value
             ? "Clicked!"
             : "Click me"
@@ -1637,7 +1633,7 @@ export function AppView() {
   });
 }
 
-mount(AppView);
+mountElement(AppView);
 ```
 
 This represents the desired direction of the framework.
@@ -1650,8 +1646,8 @@ This represents the desired direction of the framework.
 
 Implement:
 
-* `state()`
-* `computed()`
+* `createState()`
+* `createSelector()`
 * `effect()`
 * Dependency tracking
 * Subscriptions
@@ -1660,9 +1656,9 @@ Implement:
 Example:
 
 ```js
-const count = state(0);
+const count = createState(0);
 
-const doubled = computed(
+const doubled = createSelector(
   () => count.value * 2
 );
 ```
@@ -1750,9 +1746,9 @@ Implement:
 
 Implement:
 
-* `store()`
+* `createStore()`
 * Actions
-* Computed store state
+* createSelector store state
 * Subscriptions
 * Action events
 * Middleware
@@ -1798,13 +1794,13 @@ The framework should follow several rules.
 Good:
 
 ```js
-state(0)
+createState(0)
 ```
 
 Not:
 
 ```js
-new ReactiveState({
+new ReactivecreateState({
   initialValue: 0,
 });
 ```
@@ -1831,7 +1827,7 @@ Column({
 Prefer:
 
 ```js
-const clicked = state(false);
+const clicked = createState(false);
 ```
 
 over directly manipulating:
@@ -1855,7 +1851,7 @@ A counter should not require:
 It should simply use:
 
 ```js
-const count = state(0);
+const count = createState(0);
 ```
 
 ---
@@ -1865,7 +1861,7 @@ const count = state(0);
 Large applications can use:
 
 ```js
-store()
+createStore()
 resource()
 router()
 middleware()
@@ -1903,7 +1899,7 @@ A global store should not replace local state.
 Bad:
 
 ```js
-const globalStore = store({
+const globalStore = createStore({
   everyModalOpen: false,
   temporaryInputValue: "",
   hoveredButton: null,
@@ -1914,7 +1910,7 @@ Better:
 
 ```js
 function Modal() {
-  const open = state(false);
+  const open = createState(false);
 }
 ```
 
@@ -1929,13 +1925,13 @@ Developers should be able to understand the framework with four concepts:
 ### State
 
 ```js
-const count = state(0);
+const count = createState(0);
 ```
 
-### Computed
+### createSelector
 
 ```js
-const doubled = computed(
+const doubled = createSelector(
   () => count.value * 2
 );
 ```
@@ -1955,7 +1951,7 @@ function Counter() {
 ### Store
 
 ```js
-const auth = store({
+const auth = createStore({
   user: null,
 });
 ```
@@ -1975,12 +1971,12 @@ import {
   Text,
   Button,
   state,
-  computed,
+  createSelector,
   store,
   mount,
 } from "your-framework";
 
-const auth = store({
+const auth = createStore({
   user: null,
 
   actions: {
@@ -1991,9 +1987,9 @@ const auth = store({
 });
 
 function Counter() {
-  const count = state(0);
+  const count = createState(0);
 
-  const doubled = computed(
+  const doubled = createSelector(
     () => count.value * 2
   );
 
@@ -2036,7 +2032,7 @@ function App() {
   });
 }
 
-mount(App);
+mountElement(App);
 ```
 
 ---
@@ -2060,7 +2056,7 @@ The long-term architecture can be summarized as:
                     └─────────────────┘
                        │      │      │
                        ▼      ▼      ▼
-                     State Computed Effect
+                     State createSelector Effect
                        │      │
                        └──────┼──────┐
                               │      │
@@ -2081,7 +2077,7 @@ Shared state sits alongside the component system:
                            │
               ┌────────────┼────────────┐
               ▼            ▼            ▼
-           State        Computed      Actions
+           State        createSelector      Actions
               │            │            │
               └────────────┼────────────┘
                            ▼
@@ -2108,8 +2104,8 @@ The framework should remain small at its core while providing an ecosystem for m
 The core should focus on:
 
 ```text
-state()
-computed()
+createState()
+createSelector()
 effect()
 
 Column()
@@ -2118,13 +2114,13 @@ Text()
 Button()
 
 component()
-mount()
+mountElement()
 ```
 
 Then build more advanced functionality around it:
 
 ```text
-store()
+createStore()
 resource()
 router()
 forms

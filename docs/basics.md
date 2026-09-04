@@ -2,10 +2,7 @@
 
 ## Installation
 
-```bash
-npm install redium
-```
-
+right now the installation is not available using npm the package still in its early stages 
 Redium targets browser applications and works with TypeScript or modern JavaScript bundlers.
 
 ## Development server
