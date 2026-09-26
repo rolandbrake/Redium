@@ -7,7 +7,11 @@
   "module": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "sideEffects": false,
+  "bin": {
+    "redium": "./bin/redium.mjs"
+  },
   "files": [
+    "bin",
     "dist",
     "README.md",
     "LICENSE"
@@ -60,13 +64,19 @@
     }
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "node ./bin/redium.mjs dev",
     "typecheck": "tsc --noEmit",
-    "build": "node scripts/build.mjs",
-    "test": "npm run build && node --test tests/behavior.test.mjs tests/state.test.mjs tests/store.test.mjs"
+    "build": "node ./bin/redium.mjs build",
+    "build:library": "node scripts/build.mjs",
+    "preview": "node ./bin/redium.mjs preview",
+    "test": "npm run build:library && node --test tests/behavior.test.mjs tests/state.test.mjs tests/store.test.mjs"
+  },
+  "peerDependencies": {
+    "vite": "^7.0.0 || ^8.0.0"
   },
   "devDependencies": {
     "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
     "vite": "^8.2.2"
   }
 }

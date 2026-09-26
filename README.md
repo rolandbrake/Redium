@@ -1,6 +1,6 @@
 <p align="center">
   <a target="_blank" href="https://rediumjs.netlify.app/">
-    <img src="crystal.png" alt="Redium crystal" width="320"/>
+    <img src="crystal.png" alt="Redium crystal" width="100%"/>
   </a>
 </p>
 
@@ -32,16 +32,19 @@ Redium is pre-1.0 and under active development. The core primitives work, but AP
 
 See the [documentation](docs/README.md) for the getting-started guide and [unit reference](docs/units.md).
 
-## Building the package
+## Development and builds
 
 ```bash
 npm run dev
 npm run typecheck
 npm run build
+npm run build:library
 npm test
 ```
 
-Use `npm run dev` to serve the example application with Vite and HMR. Do not open `index.html` through a static server that does not transform TypeScript. `npm test` builds the package and runs the behavioral contract tests. The production build creates bundled ESM and CommonJS files, source maps, and TypeScript declarations in `dist/`. Examples are excluded from the published package.
+`npm run dev` starts the Redium development server for the application selected by `index.html`. `npm run build` creates its minified browser bundle, HTML, and imported assets in `dist/`. Do not open `index.html` through a static server that does not transform TypeScript.
+
+`npm run build:library` creates Redium's publishable ESM and CommonJS files, source maps, and TypeScript declarations in `dist/`. `npm test` runs that package build and the behavioral contract tests. See [building applications](docs/build.md) for using `npx redium dev` and `npx redium build` in an application project.
 
 The root import (`redium`) and subpath imports (such as `redium/state` and
 `redium/elements`) share runtime identities within each module format. ESM uses
@@ -240,7 +243,7 @@ Useful commands:
 
 ```bash
 npm run typecheck  # Check TypeScript without emitting files
-npm run build      # Bundle the library and generate declarations
+npm run build:library # Bundle the library and generate declarations
 npm test           # Build and run behavioral contract tests
 ```
 

@@ -15,7 +15,8 @@ Redium is a small, declarative, TypeScript-first UI library. Components are ordi
 9. [Units](units.md) - dimensions, pixels, fonts, and CSS functions
 10. [Layout](layout.md) - rows, columns, grids, and responsive widths
 11. [Stack](stack.md) - layered content and stack operations
-12. [API Reference](api.md) - public exports
+12. [Building applications](build.md) - development server and production bundles
+13. [API Reference](api.md) - public exports
 
 ## Quick start
 

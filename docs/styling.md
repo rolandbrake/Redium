@@ -69,4 +69,31 @@ row.style.color("blue"); // Only the row changes.
 Local explicit styles take precedence over shared values, which take precedence
 over component defaults. Keep page layout in Row, Column, Grid, and Center.
 
+## Automatic CSS classes
+
+Redium turns the fully resolved style for every element into a private,
+deterministic CSS class. The class and stylesheet are managed internally: do
+not name classes, write CSS, or attach a provider. Equal resolved styles share
+one generated rule, including styles created by separate components.
+
+This also applies to style changes at runtime. Calling a style method replaces
+the element's private class with the class for its new resolved declarations;
+Redium leaves any `className` you supplied untouched:
+
+```ts
+const panel = Column({ style: { background: "white" }, className: "marketing-panel" });
+
+theme.subscribe((value) => {
+  panel.style.background(value === "dark" ? "#172033" : "white");
+});
+```
+
+The browser receives stylesheet rules rather than per-element inline styles.
+The generated names are an implementation detail and must not be used by
+application code. `redium build` evaluates the production entry once while
+building, collects the constructed rules into a hashed CSS asset, and links
+that file in the generated HTML. Lifecycle hooks are not run during this pass.
+Rules introduced later by runtime state changes still fall back to Redium's
+runtime stylesheet.
+
 [Next: Units](units.md)

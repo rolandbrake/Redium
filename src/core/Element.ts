@@ -21,7 +21,10 @@ export abstract class Element extends Node {
   protected readonly canContainChildren: boolean = false;
   private mounted = false;
   private disposed = false;
-  private readonly mountSetups = new Map<MountSetup, LifecycleCleanup | undefined>();
+  private readonly mountSetups = new Map<
+    MountSetup,
+    LifecycleCleanup | undefined
+  >();
   private readonly disposeCallbacks = new Set<LifecycleCleanup>();
 
   protected constructor(tag: string, options: ElementOptions = {}) {
@@ -32,12 +35,14 @@ export abstract class Element extends Node {
         ? styles(options.style).fork()
         : new Style(options.style);
 
-    styles(this.style).bind(dom);
+    if (options.id) dom.id = options.id;
+    if (options.className) dom.className = options.className;
     styles(this.style)
       .default("box-sizing", "border-box")
       .default("min-width", "0");
-    if (options.id) dom.id = options.id;
-    if (options.className) dom.className = options.className;
+    // Finish the shared base style before registering a DOM target. This avoids
+    // emitting a transient class for an element that is still being created.
+    styles(this.style).bind(dom);
     if (options.onMount) this.onMount(options.onMount);
     if (options.onDispose) this.onDispose(options.onDispose);
   }
@@ -120,7 +125,8 @@ export abstract class Element extends Node {
   protected onChildRemoved(node: Node): void {
     if (!(node instanceof Element)) return;
     node.unmountTree();
-    if (domOf(node).parentElement === domOf(this)) domOf(this).removeChild(domOf(node));
+    if (domOf(node).parentElement === domOf(this))
+      domOf(this).removeChild(domOf(node));
   }
   onClick(fn: () => void): this {
     this.assertUsable();
@@ -129,6 +135,13 @@ export abstract class Element extends Node {
   }
   mountElement(target: HTMLElement = document.body): this {
     this.assertUsable();
+    // The production CSS extractor evaluates the entry to construct its view,
+    // but must never run application lifecycle work while doing so.
+    if (
+      (globalThis as typeof globalThis & { __REDIUM_EXTRACTING__?: boolean })
+        .__REDIUM_EXTRACTING__
+    )
+      return this;
     this.parent?.remove(this);
     target.appendChild(domOf(this));
     this.mountTree();
@@ -163,7 +176,8 @@ export abstract class Element extends Node {
     for (const child of [...this.children].reverse())
       if (child instanceof Element) child.unmountTree();
     for (const cleanup of [...this.mountSetups.values()].reverse()) cleanup?.();
-    for (const setup of this.mountSetups.keys()) this.mountSetups.set(setup, undefined);
+    for (const setup of this.mountSetups.keys())
+      this.mountSetups.set(setup, undefined);
     this.mounted = false;
   }
 

@@ -6,6 +6,7 @@ website/
 
 # Generated builds
 dist/
+site-build/
 coverage/
 .vite/
 

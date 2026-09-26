@@ -57,10 +57,83 @@ interface StyleData {
   props: Map<string, string>;
   defaults: Map<string, string>;
   targets: Set<HTMLElement>;
+  targetClasses: WeakMap<HTMLElement, string>;
   children: Set<Style>;
   source?: Style;
 }
 const data = new WeakMap<Style, StyleData>();
+
+interface StyleSheetRegistry {
+  readonly rules: Map<string, string>;
+  readonly names: Map<string, string>;
+  readonly element: HTMLStyleElement;
+}
+
+const sheets = new WeakMap<Document, StyleSheetRegistry>();
+
+type ExtractedRules = Record<string, string>;
+
+function extractedRule(key: string): string | undefined {
+  // `redium build` places this table next to its emitted stylesheet. Keeping
+  // the keys (rather than only the CSS text) lets the browser skip creating a
+  // runtime <style> element for rules already present in that file.
+  const rules = (globalThis as typeof globalThis & {
+    __REDIUM_EXTRACTED_RULES__?: ExtractedRules;
+  }).__REDIUM_EXTRACTED_RULES__;
+  return rules?.[key];
+}
+
+function hash(value: string): string {
+  // FNV-1a is small, deterministic, and sufficient for private CSS names.
+  let result = 0x811c9dc5;
+  for (let index = 0; index < value.length; index++) {
+    result ^= value.charCodeAt(index);
+    result = Math.imul(result, 0x01000193);
+  }
+  return (result >>> 0).toString(36);
+}
+
+function sheetFor(target: HTMLElement): StyleSheetRegistry {
+  const doc = target.ownerDocument ?? document;
+  const existing = sheets.get(doc);
+  if (existing) return existing;
+
+  const element = doc.createElement("style");
+  element.setAttribute("data-redium-styles", "");
+  (doc.head ?? doc.body).appendChild(element);
+  const registry = { rules: new Map(), names: new Map(), element };
+  sheets.set(doc, registry);
+  return registry;
+}
+
+function ruleFor(target: HTMLElement, current: Map<string, string>): string | undefined {
+  if (!current.size) return undefined;
+  const declarations = [...current.entries()].sort(([left], [right]) => left.localeCompare(right));
+  const key = declarations.map(([property, value]) => `${property}:${value}`).join(";");
+  const extracted = extractedRule(key);
+  if (extracted) return extracted;
+  const sheet = sheetFor(target);
+  const cached = sheet.rules.get(key);
+  if (cached) return cached;
+
+  const base = `r-${hash(key)}`;
+  let name = base;
+  let suffix = 1;
+  while (sheet.names.has(name) && sheet.names.get(name) !== key)
+    name = `${base}-${suffix++}`;
+  const rule = `.${name}{${declarations.map(([property, value]) => `${property}:${value}`).join(";")}}`;
+  sheet.rules.set(key, name);
+  sheet.names.set(name, key);
+  sheet.element.textContent += rule;
+  return name;
+}
+
+function replaceClass(target: HTMLElement, previous: string | undefined, next: string | undefined): void {
+  if (previous === next) return;
+  if (previous) target.classList.remove(previous);
+  if (next) target.classList.add(next);
+}
+
 function values(style: Style): Map<string, string> {
   const record = data.get(style)!;
   return new Map([
@@ -73,7 +146,11 @@ function refresh(style: Style): void {
   const record = data.get(style)!;
   const current = values(style);
   for (const target of record.targets) {
-    current.forEach((value, property) => target.style.setProperty(property, value));
+    const next = ruleFor(target, current);
+    const previous = record.targetClasses.get(target);
+    replaceClass(target, previous, next);
+    if (next) record.targetClasses.set(target, next);
+    else record.targetClasses.delete(target);
   }
   record.children.forEach(refresh);
 }
@@ -116,7 +193,13 @@ export function styles(style: Style): StyleAccess {
 /** Reusable appearance; element-specific defaults never modify its source. */
 export class Style {
   constructor(config: StyleConfig = {}) {
-    data.set(this, { props: new Map(), defaults: new Map(), targets: new Set(), children: new Set() });
+    data.set(this, {
+      props: new Map(),
+      defaults: new Map(),
+      targets: new Set(),
+      targetClasses: new WeakMap(),
+      children: new Set(),
+    });
     Object.entries(config).forEach(([key, value]) => {
       if (value !== undefined)
         (this as unknown as Record<string, (v: unknown) => void>)[key]?.(value);
