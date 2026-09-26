@@ -18,6 +18,7 @@ path in `index.html`, for example:
 - `control-flow.ts`: runnable conditional and keyed-list examples.
 - `stack.ts`: layered content and disposable dialog examples.
 - `store.ts`: shared application state, actions, and selected values.
+- `style.ts`: reusable styles and generated class reuse.
 
 State remembers a value. A selector derives another value from it. Passing either
 to Text keeps the text updated. Resize the browser to explore the layouts.

@@ -1,9 +1,13 @@
 import {
   Button,
+  Border,
+  Center,
   Column,
+  Colors,
   For,
   If,
   Row,
+  Root,
   Text,
   createState,
   mountElement,
@@ -15,10 +19,11 @@ function Dashboard() {
   return Column({
     gap: 12,
     padding: 20,
-    style: { background: "#ffffff", radius: 12 },
+    style: { background: "azure", radius: 24, border: Border(1, Colors.black) },
     children: [
       Text("Conditional branch", { style: { font: 20, weight: 700 } }),
       Button("Toggle", {
+        style: { background: "aquamarine", radius: 50, border: Border(1, Colors.black) },
         onClick: () => (visible.value = !visible.value),
       }),
       If(
@@ -36,16 +41,18 @@ function Users() {
   return Column({
     gap: 10,
     padding: 20,
-    style: { background: "#ffffff", radius: 12 },
+    style: { background: "antiquewhite", radius: 24, border: Border(1, Colors.black) },
     children: [
       Text("Keyed users", { style: { font: 20, weight: 700 } }),
       Row({
         gap: 8,
         children: [
           Button("Reverse", {
+            style: { background: "aqua", radius: 50, border: Border(1, Colors.black) },
             onClick: () => (users.value = [...users.value].reverse()),
           }),
           Button("Remove Roland", {
+            style: { background: "azure", radius: 50, border: Border(1, Colors.black) },
             onClick: () =>
               (users.value = users.value.filter((user) => user !== "Roland")),
           }),
@@ -59,7 +66,7 @@ function Users() {
 const page = Column({
   gap: 20,
   padding: 24,
-  style: { background: "#f1f5f9", minHeight: 1 },
+  style: { background: "aliceblue", maxWidth: 720, radius: 24, border: Border(1, Colors.black) },
   children: [
     Text("Control flow", { style: { font: 28, weight: 700 } }),
     Dashboard(),
@@ -67,4 +74,6 @@ const page = Column({
   ],
 });
 
-export const controlFlowPage = mountElement(page);
+export const controlFlowPage = mountElement(
+  Root(Center(page, { padding: 16 }), { style: { background: "aliceblue" } }),
+);

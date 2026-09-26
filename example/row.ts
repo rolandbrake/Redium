@@ -1,4 +1,4 @@
-import { Container, Root, Row, Text, mountElement } from "redium";
+import { Container, Root, Row, Text, mountElement, ratio } from "redium";
 
 function Item(label: string, width: number, color: string) {
   return Container({
@@ -13,6 +13,7 @@ function RowStudy() {
   return Root(
     Container({
       gap: 20,
+      height: ratio(1),
       padding: 20,      
       children: [
         Text("Row behavior", { style: { font: 28, weight: 700 } }),

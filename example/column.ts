@@ -18,6 +18,7 @@ function ColumnStudy() {
     Container({
       gap: 16,
       padding: 20,
+      height: ratio(1),
       style: { background: "#f8fafc", color: "#172033" },
       children: [
         Text("Column behavior", { style: { font: 28, weight: 700 } }),

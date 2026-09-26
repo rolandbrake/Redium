@@ -5,10 +5,10 @@ import {
   Container,
   Grid,
   Root,
-  Shadow,
+  State,
   Text,
-  createState,
   createSelector,
+  createState,
   mountElement,
   ratio,
 } from "redium";
@@ -45,57 +45,61 @@ const plans: Plan[] = [
   },
 ];
 
-function PlanCard(plan: Plan, selections: ReturnType<typeof createState<number>>) {
-  return Container({
-    // Each card is an independent vertical Container. The parent Grid gives
-    // it a track width; gap only controls spacing between its own children.
+function PlanCard(plan: Plan, selectedPlan: State<string | null>) {
+  const selected = createSelector(() => selectedPlan.value === plan.name);
+  const card = Container({
     gap: 14,
     padding: 24,
     style: {
-      background: Colors.white,
-      color: "#0f172a",
-      radius: 14,
-      border: Border(1, "#e2e8f0"),
-      shadow: Shadow.sm,
+      background: "azure",
+      color: Colors.black,
+      radius: 24,
+      border: Border(1, Colors.black),
     },
     children: [
       Text(plan.name, { style: { font: 22, weight: 700, color: plan.accent } }),
-      Text(plan.description, { style: { font: 15, color: Colors.slate } }),
+      Text(plan.description, { style: { font: 15, color: Colors.black } }),
       Text(plan.price, { style: { font: 34, weight: 700 } }),
       Container({
-        // This nested Container creates a local vertical list for the features.
         gap: 6,
         children: plan.features.map((feature) => Text(`• ${feature}`)),
       }),
-      Button("Choose plan", {
-        onClick: () => selections.value++,
-        // An explicit ratio fills this card's content width, not the page.
-        style: {
-          width: ratio(1),
-          background: plan.accent,
-          color: Colors.white,
-          radius: 8,
+      Button(
+        selected.map((value) => (value ? "Selected" : "Choose plan")),
+        {
+          onClick: () => (selectedPlan.value = plan.name),
+          style: {
+            width: ratio(1),
+            background: "aquamarine",
+            color: Colors.black,
+            radius: 50,
+            border: Border(1, Colors.black),
+          },
         },
-      }),
+      ),
     ],
+    onMount: () =>
+      selected.subscribe((isSelected) => {
+        card.style.background(isSelected ? "aquamarine" : "azure");
+      }),
   });
+  return card;
 }
 
 function ContainersExample() {
-  const selections = createState(0);
+  const selectedPlan = createState<string | null>(null);
   const message = createSelector(() =>
-    selections.value === 0
+    selectedPlan.value === null
       ? "Choose a plan to see reactive state in action."
-      : `${selections.value} plan selection${selections.value === 1 ? "" : "s"} recorded.`,
+      : `${selectedPlan.value} is selected.`,
   );
-
-  // The outer Container fills Root and stacks its children. The responsive
-  // Grid below keeps the cards usable as the viewport becomes narrower.
   return Root(
     Container({
       gap: 28,
-      padding: [28, 32],
-      style: { background: "#f8fafc", color: "#0f172a" },
+    padding: [24, 16, 48],
+      minHeight: ratio(1),      
+      wrap: false,
+      style: { background: "aliceblue", color: Colors.black },
       children: [
         Container({
           gap: 8,
@@ -103,24 +107,24 @@ function ContainersExample() {
             Text("Choose your workspace", { style: { font: 32, weight: 700 } }),
             Text(
               "A responsive pricing layout using Container, Grid, and reactive state.",
-              {
-                style: { font: 16, color: Colors.slate },
-              },
+              { style: { font: 16, color: Colors.black } },
             ),
           ],
         }),
-      Grid({
-        // The grid can begin with three columns, but minColumnWidth is the
-        // responsive rule: auto-fit removes columns as space becomes scarce.
-        // Grid gap is handled by the grid layout, not card width ratios.
+        Grid({
           columns: 3,
           minColumnWidth: 240,
           gap: 20,
-          children: plans.map((plan) => PlanCard(plan, selections)),
+          children: plans.map((plan) => PlanCard(plan, selectedPlan)),
         }),
         Container({
           padding: 16,
-          style: { background: "#1e293b", color: Colors.white, radius: 10 },
+          style: {
+            background: "antiquewhite",
+            color: Colors.black,
+            radius: 24,
+            border: Border(1, Colors.black),
+          },
           children: [Text(message, { style: { font: 15 } })],
         }),
       ],

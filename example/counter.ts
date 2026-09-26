@@ -8,8 +8,9 @@ import {
   mountElement,
   min,
   Shadow,
+  Border,
+  Colors,
 } from "redium";
-
 
 export function Counter() {
   const count = createState(0);
@@ -17,11 +18,13 @@ export function Counter() {
   const card = Column({
     gap: 20,
     center: true,
+    height: 0.999,
     padding: 28,
     style: {
       width: min(0.99, 400),
-      background: "#ffffff",
+      background: "#ffffff",      
       radius: 20,
+      border: Border(1, Colors.black),
       shadow: Shadow.lg,
     },
     children: [
@@ -41,6 +44,7 @@ export function Counter() {
               width: 56,
               height: 48,
               radius: 12,
+              border: Border(1, Colors.black),
               background: "#e2e8f0",
               color: "#0f172a",
               font: 24,
@@ -54,6 +58,7 @@ export function Counter() {
               width: 96,
               height: 48,
               radius: 12,
+              border: Border(1, Colors.black),
               background: "#f8fafc",
               color: "#475569",
               font: 14,
@@ -67,6 +72,7 @@ export function Counter() {
               width: 56,
               height: 48,
               radius: 12,
+              border: Border(1, Colors.black),
               background: "#2563eb",
               color: "#ffffff",
               font: 24,

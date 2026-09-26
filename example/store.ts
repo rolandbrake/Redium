@@ -1,8 +1,8 @@
 import {
   Border,
   Button,
-  Colors,
   Column,
+  Colors,
   If,
   Row,
   Text,
@@ -11,91 +11,103 @@ import {
   ratio,
 } from "redium";
 
-type AppState = {
-  theme: "light" | "dark";
-  sidebarOpen: boolean;
-};
-
-// A module-scoped store is shared by every component that imports it.
-const appStore = createStore<AppState>({
-  theme: "light",
-  sidebarOpen: false,
-});
-
-const theme = appStore.selectState((state) => state.theme);
-const sidebarOpen = appStore.selectState((state) => state.sidebarOpen);
-const darkTheme = appStore.selectState((state) => state.theme === "dark");
-const themeMessage = appStore.selectState((state) =>
+type AppState = { theme: "light" | "dark"; sidebarOpen: boolean };
+const store = createStore<AppState>({ theme: "light", sidebarOpen: false });
+const theme = store.selectState((state) => state.theme);
+const sidebarOpen = store.selectState((state) => state.sidebarOpen);
+const isDark = store.selectState((state) => state.theme === "dark");
+const message = store.selectState((state) =>
   state.theme === "light" ? "Light theme selected" : "Dark theme selected",
 );
 
-const actions = {
-  toggleTheme() {
-    appStore.updateState((state) => ({
-      ...state,
-      theme: state.theme === "light" ? "dark" : "light",
-    }));
+// TODO: change this logic in the future
+const transition =
+  "background-color 180ms ease, color 180ms ease, border-color 180ms ease";
+const palette = {
+  light: {
+    page: "aliceblue",
+    text: "#102033",
+    surface: "azure",
+    primary: "aquamarine",
+    secondary: "antiquewhite",
+    border: Colors.black,
   },
-  toggleSidebar() {
-    appStore.updateState((state) => ({
-      ...state,
-      sidebarOpen: !state.sidebarOpen,
-    }));
+  dark: {
+    page: "#17243a",
+    text: "#eef6ff",
+    surface: "#263957",
+    primary: "#8de0ce",
+    secondary: "#c4b5fd",
+    border: "#d6e6ff",
   },
 };
 
+function Sidebar() {
+  const card = Column({
+    padding: 16,
+    style: { radius: 24, transition },
+    children: [Text("Shared sidebar state is open.")],
+  });
+  const apply = (name: AppState["theme"]) => {
+    const colors = palette[name];
+    card.style
+      .background(colors.surface)
+      .color(colors.text)
+      .border(Border(1, colors.border));
+  };
+  apply(theme.value);
+  card.onMount(() => theme.subscribe(apply));
+  return card;
+}
+
+const themeButton = Button("Toggle theme", {
+  style: { radius: 50, transition },
+  onClick: () =>
+    store.updateState((state) => ({
+      ...state,
+      theme: state.theme === "light" ? "dark" : "light",
+    })),
+});
+const sidebarButton = Button("Toggle sidebar", {
+  style: { radius: 50, transition },
+  onClick: () =>
+    store.updateState((state) => ({
+      ...state,
+      sidebarOpen: !state.sidebarOpen,
+    })),
+});
 const page = Column({
   gap: 16,
-  padding: 24,
-  height: ratio(1),
-  style: {
-    minHeight: 1,
-  },
-  onMount: () =>
-    theme.subscribe((currentTheme) => {
-      page.style.background(currentTheme === "dark" ? "#2c4c70" : "#ffffff");
-    }),
+  padding: [24, 16, 48],
+  minHeight: ratio(1),
+  wrap: false,
+  style: { transition },
   children: [
     Text("Application store", { style: { font: 28, weight: 700 } }),
     Text(theme),
-    Text(themeMessage),
-    Row({
-      gap: 8,
-      children: [
-        Button("Toggle theme", {
-          style: {
-            border: Border(1, Colors.black),
-            background: Colors.emerald,
-            radius: 50,
-          },
-          onClick: actions.toggleTheme,
-        }),
-        Button("Toggle sidebar", {
-          style: {
-            border: Border(1, Colors.black),
-            background: Colors.indigo,
-            radius: 50,
-          },
-          onClick: actions.toggleSidebar,
-        }),
-      ],
-    }),
+    Text(message),
+    Row({ gap: 8, children: [themeButton, sidebarButton] }),
     If(
-      darkTheme,
-      () => Text("Dark branch is active.", { style: { color: "#1d4ed8" } }),
-      () => Text("Light branch is active.", { style: { color: "#b45309" } }),
+      isDark,
+      () => Text("Dark branch is active."),
+      () => Text("Light branch is active."),
     ),
-    If(
-      sidebarOpen,
-      () =>
-        Column({
-          padding: 16,
-          style: { background: "#dbeafe", radius: 12 },
-          children: [Text("Shared sidebar state is open.")],
-        }),
-      () => Text("Shared sidebar state is closed."),
-    ),
+    If(sidebarOpen, Sidebar, () => Text("Shared sidebar state is closed.")),
   ],
 });
 
+function applyTheme(name: AppState["theme"]) {
+  const colors = palette[name];
+  page.style.background(colors.page).color(colors.text);
+  themeButton.style
+    .background(colors.primary)
+    .color(colors.text)
+    .border(Border(1, colors.border));
+  sidebarButton.style
+    .background(colors.secondary)
+    .color(colors.text)
+    .border(Border(1, colors.border));
+}
+applyTheme(theme.value);
+page.onMount(() => theme.subscribe(applyTheme));
 export const storePage = mountElement(page);

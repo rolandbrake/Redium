@@ -7,18 +7,17 @@ import {
   Column,
   Root,
   Row,
-  Shadow,
   Text,
   createState,
   mountElement,
+  ratio,
 } from "redium";
 
 const colors = {
-  background: "#f8fafc",
-  surface: Colors.white,
-  text: "#0f172a",
-  muted: Colors.slate,
-  border: "#e2e8f0",
+  background: "aliceblue",
+  surface: "azure",
+  text: Colors.black,
+  muted: Colors.black,
 };
 
 function Header() {
@@ -28,7 +27,12 @@ function Header() {
   return Container({
     padding: [18, 24],
 
-    style: { background: Colors.blue, color: Colors.white, radius: 12 },
+    style: {
+      background: "aqua",
+      color: Colors.black,
+      radius: 24,
+      border: Border(1, Colors.black),
+    },
     children: [
       Row({
         gap: 16,
@@ -52,7 +56,12 @@ function Header() {
           }),
           Button("Notify", {
             onClick: () => notifications.value++,
-            style: { background: Colors.white, color: Colors.blue, radius: 8 },
+            style: {
+              background: "antiquewhite",
+              color: Colors.black,
+              radius: 50,
+              border: Border(1, Colors.black),
+            },
           }),
         ],
       }),
@@ -68,7 +77,12 @@ function Sidebar() {
     shrink: 0,
     padding: 20,
     gap: 12,
-    style: { background: "#1e293b", color: Colors.white, radius: 12 },
+    style: {
+      background: "aquamarine",
+      color: Colors.black,
+      radius: 24,
+      border: Border(1, Colors.black),
+    },
     children: [
       Text("Workspace", { style: { font: 18, weight: 700 } }),
       Text("Overview"),
@@ -86,9 +100,8 @@ function MetricCard(label: string, value: string, accent: string) {
     style: {
       background: colors.surface,
       color: colors.text,
-      radius: 12,
-      border: Border(1, colors.border),
-      shadow: Shadow.sm,
+      radius: 24,
+      border: Border(1, Colors.black),
     },
     children: [
       Text(label, { style: { font: 14, color: colors.muted } }),
@@ -134,9 +147,8 @@ function MainContent() {
         style: {
           background: colors.surface,
           color: colors.text,
-          radius: 12,
-          border: Border(1, colors.border),
-          shadow: Shadow.sm,
+          radius: 24,
+          border: Border(1, Colors.black),
         },
         children: [
           Text("Recent activity", { style: { font: 20, weight: 700 } }),
@@ -159,7 +171,11 @@ function LayoutExample() {
     Column({
       gap: 16,
       padding: 16,
-      style: { background: colors.background, color: colors.text },
+      style: {
+        background: colors.background,
+        color: colors.text,
+        height: ratio(1),      
+      },
       children: [
         Header(),
         // The Row owns the 16px gap. Fixed and flexible widths are used here

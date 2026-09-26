@@ -39,6 +39,7 @@ export interface StyleConfig {
   opacity?: number;
   zIndex?: number;
   cursor?: string;
+  transition?: string;
   font?: number;
   weight?: number;
   padding?: SpacingValue;
@@ -276,6 +277,9 @@ export class Style {
   }
   cursor(v: string): this {
     return this.#write("cursor", v);
+  }
+  transition(v: string): this {
+    return this.#write("transition", v);
   }
   border(v: BorderValue): this {
     if (v.kind !== "border") throw new Error("Invalid border value.");

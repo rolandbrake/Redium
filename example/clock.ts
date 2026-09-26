@@ -1,11 +1,14 @@
 import {
   Button,
+  Border,
   Column,
+  Colors,
   Row,
   Text,
   createState,
   createSelector,
   mountElement,
+  ratio,
 } from "redium";
 
 function Clock() {
@@ -14,7 +17,7 @@ function Clock() {
   return Column({
     gap: 12,
     padding: 20,
-    style: { background: "#ffffff", radius: 12 },
+    style: { background: "azure", radius: 24, border: Border(1, Colors.black) },
     children: [
       Text("Mount-scoped clock", { style: { font: 20, weight: 700 } }),
       Text(label, { style: { font: 32, weight: 700 } }),
@@ -71,9 +74,11 @@ export default function LifecyclePage() {
   return Column({
     gap: 16,
     padding: 24,
+    height: ratio(1),
     style: {
-      background: "#f1f5f9",
+      background: "aliceblue",
       minHeight: 1,
+      height: ratio(1),
     },
     children: [
       Text("Element lifecycle", {
@@ -93,27 +98,42 @@ export default function LifecyclePage() {
         gap: 8,
         children: [
           Button("Show", {
+            style: {
+              background: "aquamarine",
+              radius: 50,
+              border: Border(1, Colors.black),
+            },
             onClick: showClock,
             disabled: controlsDisabled,
           }),
 
           Button("Hide", {
+            style: {
+              background: "antiquewhite",
+              radius: 50,
+              border: Border(1, Colors.black),
+            },
             onClick: hideClock,
             disabled: controlsDisabled,
           }),
 
           Button("Dispose", {
+            style: {
+              background: "aqua",
+              radius: 50,
+              border: Border(1, Colors.black),
+            },
             onClick: disposeClock,
             disabled: controlsDisabled,
           }),
         ],
-      }), 
+      }),
 
       stage,
     ],
     onMount: () => {
       showClock();
-      return disposeClock
+      return disposeClock;
     },
   });
 }

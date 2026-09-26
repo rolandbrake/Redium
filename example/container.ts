@@ -1,4 +1,4 @@
-import { Container, Root, Text, mountElement } from "redium";
+import { Container, Root, Text, mountElement, ratio } from "redium";
 
 function Panel(title: string, body: string, color: string) {
   return Container({
@@ -19,6 +19,7 @@ function ContainerStudy() {
     Container({
       gap: 16,
       padding: 20,
+      height: ratio(1),
       style: { background: "#f8fafc", color: "#172033" },
       children: [
         Text("Container behavior", { style: { font: 28, weight: 700 } }),

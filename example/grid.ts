@@ -1,10 +1,10 @@
-import { Grid, Root, Text, Container, mountElement, Colors } from "redium";
+import { Grid, Root, Text, Container, mountElement, Colors, ratio } from "redium";
 
 function Tile(number: number, color: string) {
   return Container({
     padding: 20,
-    height: 300,
-    style: { background: color, radius: 12, minHeight: 72 },
+    minHeight: 160,
+    style: { background: color, radius: 12 },
     children: [
       Text(`Tile ${number}`, { style: { font: 18, weight: 700 } }),
       Text("Grid items stretch into equal tracks."),
@@ -16,7 +16,9 @@ function GridStudy() {
   return Root(
     Container({
       gap: 16,
-      padding: 20,
+      padding: [20, 16, 48],
+      minHeight: ratio(1),
+      wrap: false,
       style: { background: "#f8fafc", color: "#172033" },
       children: [
         Text("Grid behavior", { style: { font: 28, weight: 700 } }),
