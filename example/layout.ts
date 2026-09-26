@@ -14,8 +14,8 @@ import {
 } from "redium";
 
 const colors = {
-  background: "aliceblue",
-  surface: "azure",
+  background: Colors.aliceblue,
+  surface: Colors.azure,
   text: Colors.black,
   muted: Colors.black,
 };
@@ -64,7 +64,7 @@ function Header() {
             },
           }),
         ],
-      }),
+      }), // Row
     ],
   });
 }
@@ -159,9 +159,9 @@ function MainContent() {
             },
           ),
         ],
-      }),
+      }), // Container
     ],
-  });
+  }); // Column
 }
 
 function LayoutExample() {
@@ -174,7 +174,7 @@ function LayoutExample() {
       style: {
         background: colors.background,
         color: colors.text,
-        height: ratio(1),      
+        height: ratio(1),
       },
       children: [
         Header(),
@@ -182,8 +182,8 @@ function LayoutExample() {
         // so spacing is not added on top of percentage widths.
         Row({ gap: 16, wrap: true, children: [Sidebar(), MainContent()] }),
       ],
-    }),
-  );
+    }), // Column
+  ); // Root
 }
 
 export const page = mountElement(LayoutExample);

@@ -11,10 +11,18 @@ const View = () => {
     },
     children: [
       Text("Hello, Redium!", {
-        style: { color: Colors.white, font: 24, weight: 700 },
+        style: {
+          padding: [8, 16],
+          background: "#ffc000",
+          radius: 24,
+          color: Colors.white,
+          font: 24,
+          weight: 700,
+        },
       }),
     ],
   });
 };
 
 mountElement(Root(View(), { style: { background: Colors.gray } }));
+

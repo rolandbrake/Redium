@@ -1,6 +1,7 @@
 import { Node } from "./Node.js";
 import { Style, styles, type StyleConfig } from "../style/Style.js";
 import { createDOM, domOf } from "./_dom.js";
+import { assignElementId } from "./_identity.js";
 
 export interface ElementOptions {
   style?: Style | StyleConfig;
@@ -29,6 +30,7 @@ export abstract class Element extends Node {
 
   protected constructor(tag: string, options: ElementOptions = {}) {
     super();
+    assignElementId(this);
     const dom = createDOM(this, tag);
     this.style =
       options.style instanceof Style

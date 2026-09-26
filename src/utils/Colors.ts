@@ -1,5 +1,14 @@
-/** Built-in palette for common UI colors. */
+const browserColorNames = [
+  "aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black", "blue", "brown", "coral", "cornflowerblue", "crimson", "cyan", "darkblue", "darkcyan", "darkgray", "darkgreen", "darkgrey", "darkorange", "darkred", "deepskyblue", "dimgray", "dimgrey", "firebrick", "forestgreen", "fuchsia", "gainsboro", "gold", "goldenrod", "gray", "green", "grey", "honeydew", "hotpink", "indianred", "indigo", "ivory", "khaki", "lavender", "lawngreen", "lemonchiffon", "lightblue", "lightcyan", "lightgray", "lightgreen", "lightgrey", "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightsteelblue", "lime", "limegreen", "linen", "magenta", "maroon", "mediumblue", "mediumseagreen", "mediumslateblue", "mediumspringgreen", "mediumturquoise", "midnightblue", "mintcream", "mistyrose", "moccasin", "navy", "oldlace", "olive", "orange", "orchid", "palegreen", "paleturquoise", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "purple", "rebeccapurple", "red", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "silver", "skyblue", "slateblue", "slategray", "slategrey", "snow", "springgreen", "steelblue", "tan", "teal", "thistle", "tomato", "transparent", "turquoise", "violet", "wheat", "white", "whitesmoke", "yellow", "yellowgreen",
+] as const;
+
+const BrowserColors = Object.fromEntries(
+  browserColorNames.map((name) => [name, name]),
+) as { readonly [Name in (typeof browserColorNames)[number]]: Name };
+
+/** Built-in palette for common UI colors and standard browser color keywords. */
 export const Colors = Object.freeze({
+  ...BrowserColors,
   white: "#ffffff",
   black: "#000000",
 

@@ -12,7 +12,9 @@ import {
 } from "redium";
 
 type AppState = { theme: "light" | "dark"; sidebarOpen: boolean };
+
 const store = createStore<AppState>({ theme: "light", sidebarOpen: false });
+
 const theme = store.selectState((state) => state.theme);
 const sidebarOpen = store.selectState((state) => state.sidebarOpen);
 const isDark = store.selectState((state) => state.theme === "dark");
@@ -25,11 +27,11 @@ const transition =
   "background-color 180ms ease, color 180ms ease, border-color 180ms ease";
 const palette = {
   light: {
-    page: "aliceblue",
+    page: Colors.aliceblue,
     text: "#102033",
-    surface: "azure",
-    primary: "aquamarine",
-    secondary: "antiquewhite",
+    surface: Colors.azure,
+    primary: Colors.aquamarine,
+    secondary: Colors.antiquewhite,
     border: Colors.black,
   },
   dark: {

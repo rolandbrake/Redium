@@ -8,11 +8,14 @@
 # Redium
 
 > A small, declarative, JavaScript-first UI library for building reactive interfaces with TypeScript.
+> Redium distills UI down to its reactive, reduced, non-redundant elements.
 
-Redium is an early-stage experiment in making UI development feel direct and readable. It uses ordinary TypeScript functions instead of JSX, keeps state explicit, and maps a small component API to real DOM elements.
+Named after radium the element, (not the framework) Redium borrows science's habit of naming things for what they do at their smallest unit. 
+
+It is a small TypeScript UI library that makes reactive interfaces feel direct. Components are ordinary functions, state is explicit, and styles live next to the code that uses them no JSX transform, no CSS strings, no virtual DOM on the basic rendering path.
 
 
-The project is intentionally incomplete. That is also the invitation: if you enjoy UI architecture, reactive systems, DOM APIs, or developer tooling, there is plenty of room to shape Redium with us.
+Redium is an early-stage experiment, The project is intentionally incomplete. That is also the invitation: if you enjoy UI architecture, reactive systems, DOM APIs, or developer tooling, there is plenty of room to shape Redium with us.
 
 ## Why Redium?
 
@@ -26,32 +29,16 @@ Redium aims to offer a lightweight alternative for developers who want:
 - No virtual DOM requirement for the basic rendering path
 - A codebase small enough to understand and improve
 
+## What Redium is not
+
+Redium is not trying to be a React replacement. It has a deliberate philosophy zero CSS strings, zero HTML strings, state as named primitives and it holds that line. If you need SSR, a mature ecosystem, or a battle-tested component library, React or SolidJS will serve you better. Redium is for developers who want to understand every layer of what they are running.
+
 ## Current status
 
 Redium is pre-1.0 and under active development. The core primitives work, but APIs may change while the architecture settles. It is best suited for experiments, prototypes, learning, and contributors interested in helping define the library's direction.
 
 See the [documentation](docs/README.md) for the getting-started guide and [unit reference](docs/units.md).
 
-## Development and builds
-
-```bash
-npm run dev
-npm run typecheck
-npm run build
-npm run build:library
-npm test
-```
-
-`npm run dev` starts the Redium development server for the application selected by `index.html`. `npm run build` creates its minified browser bundle, HTML, and imported assets in `dist/`. Do not open `index.html` through a static server that does not transform TypeScript.
-
-`npm run build:library` creates Redium's publishable ESM and CommonJS files, source maps, and TypeScript declarations in `dist/`. `npm test` runs that package build and the behavioral contract tests. See [building applications](docs/build.md) for using `npx redium dev` and `npx redium build` in an application project.
-
-The root import (`redium`) and subpath imports (such as `redium/state` and
-`redium/elements`) share runtime identities within each module format. ESM uses
-shared chunks; CommonJS subpaths re-export one runtime bundle. Keep the complete
-`dist/` directory when distributing the package, including its `chunks/` folder.
-ESM and CommonJS are separate runtimes: use one format consistently when passing
-Redium states, styles, and elements between modules.
 
 ## Quick example
 
@@ -239,13 +226,29 @@ import { Column, Text } from "redium/elements";
 import { Unit } from "redium/style";
 ```
 
-Useful commands:
+
+
+
+## Development and builds
 
 ```bash
-npm run typecheck  # Check TypeScript without emitting files
-npm run build:library # Bundle the library and generate declarations
-npm test           # Build and run behavioral contract tests
+npm run dev
+npm run typecheck
+npm run build
+npm run build:library
+npm test
 ```
+
+`npm run dev` starts the Redium development server for the application selected by `index.html`. `npm run build` creates its minified browser bundle, HTML, and imported assets in `dist/`. Do not open `index.html` through a static server that does not transform TypeScript.
+
+`npm run build:library` creates Redium's publishable ESM and CommonJS files, source maps, and TypeScript declarations in `dist/`. `npm test` runs that package build and the behavioral contract tests. See [building applications](docs/build.md) for using `npx redium dev` and `npx redium build` in an application project.
+
+The root import (`redium`) and subpath imports (such as `redium/state` and
+`redium/elements`) share runtime identities within each module format. ESM uses
+shared chunks; CommonJS subpaths re-export one runtime bundle. Keep the complete
+`dist/` directory when distributing the package, including its `chunks/` folder.
+ESM and CommonJS are separate runtimes: use one format consistently when passing
+Redium states, styles, and elements between modules.
 
 ## Project structure
 
@@ -301,4 +304,4 @@ If you are unsure where to begin, open a discussion or issue with an idea, quest
 
 ## License
 
-No license has been selected yet. Add a license before publishing Redium for external use so contributors and users know how the code may be used.
+MIT License 
