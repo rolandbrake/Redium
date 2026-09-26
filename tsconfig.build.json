@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist/types",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false
+  },
+  "include": [
+    "index.ts",
+    "core.ts",
+    "render.ts",
+    "control.ts",
+    "store.ts",
+    "elements.ts",
+    "state.ts",
+    "style.ts",
+    "colors.ts",
+    "src"
+  ]
+}

@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+website/
+
+
+
+# Generated builds
+dist/
+coverage/
+.vite/
+
+
+tests/
+
+
+# Package archives
+*.tgz
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tempCodeRunnerFile.*
