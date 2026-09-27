@@ -1,6 +1,6 @@
-import { styles } from "../style/Style.js";
 import { ContainerElement } from "../elements/Container.js";
 import type { ContainerOptions } from "../elements/Container.js";
+import type { Node } from "./Node.js";
 
 export type RootOptions = Omit<
   ContainerOptions,
@@ -13,19 +13,14 @@ export class RootElement extends ContainerElement {
 
   constructor(body: ContainerElement, options: RootOptions = {}) {
     super(options);
+    this.setElementKind("root");
     this.body = body;
     super.add(this.body);
 
-    //Todo: check this solution later
-    styles(this.style)
-      .default("min-height", "100vh")
-      .default("max-width", "100vw")
-      .default("overflow-x", "hidden")
-      .default("overflow-y", "auto");
   }
 
   /** Add application content to Root.body, keeping Root's hierarchy fixed. */
-  override add(...nodes: import("../core/Node.js").Node[]): this {
+  override add(...nodes: Node[]): this {
     this.body.add(...nodes);
     return this;
   }

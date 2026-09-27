@@ -1,5 +1,6 @@
 import { Node } from "./Node.js";
 import { Style, styles, type StyleConfig } from "../style/Style.js";
+import { installBaseStyles } from "../style/BaseStyles.js";
 import { createDOM, domOf } from "./_dom.js";
 import { assignElementId } from "./_identity.js";
 
@@ -22,16 +23,19 @@ export abstract class Element extends Node {
   protected readonly canContainChildren: boolean = false;
   private mounted = false;
   private disposed = false;
+  /** Private runtime identity; never replaces an author-provided HTML id. */
+  private readonly _id: string;
   private readonly mountSetups = new Map<
     MountSetup,
     LifecycleCleanup | undefined
   >();
   private readonly disposeCallbacks = new Set<LifecycleCleanup>();
 
-  protected constructor(tag: string, options: ElementOptions = {}) {
+  protected constructor(tag: string, options: ElementOptions = {}, kind = "element") {
     super();
-    assignElementId(this);
+    this._id = assignElementId(this);
     const dom = createDOM(this, tag);
+    installBaseStyles(dom.ownerDocument ?? document);
     this.style =
       options.style instanceof Style
         ? styles(options.style).fork()
@@ -39,14 +43,23 @@ export abstract class Element extends Node {
 
     if (options.id) dom.id = options.id;
     if (options.className) dom.className = options.className;
-    styles(this.style)
-      .default("box-sizing", "border-box")
-      .default("min-width", "0");
+    dom.classList.add("r-element", `r-${kind}`);
+    dom.setAttribute("data-redium", kind);
+    dom.setAttribute("data-redium-id", this._id);
     // Finish the shared base style before registering a DOM target. This avoids
     // emitting a transient class for an element that is still being created.
     styles(this.style).bind(dom);
     if (options.onMount) this.onMount(options.onMount);
     if (options.onDispose) this.onDispose(options.onDispose);
+  }
+  /** @internal Adds stable component/variant classes without touching author classes. */
+  protected addBaseClasses(...classes: string[]): void {
+    domOf(this).classList.add(...classes);
+  }
+  /** @internal Replaces the DevTools marker for a specialized component. */
+  protected setElementKind(kind: string): void {
+    domOf(this).setAttribute("data-redium", kind);
+    this.addBaseClasses(`r-${kind}`);
   }
   override add(...nodes: Node[]): this {
     this.assertUsable();

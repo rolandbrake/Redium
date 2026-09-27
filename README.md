@@ -7,8 +7,7 @@
 
 # Redium
 
-> A small, declarative, JavaScript-first UI library for building reactive interfaces with TypeScript.
-> Redium distills UI down to its reactive, reduced, non-redundant elements.
+> Redium redistills UI to its most reduced, radiant form a redundancy-free TypeScript library for building reactive interfaces from pure declarative elements.
 
 Named after radium the element, (not the framework) Redium borrows science's habit of naming things for what they do at their smallest unit. 
 
@@ -28,6 +27,39 @@ Redium aims to offer a lightweight alternative for developers who want:
 - A small styling layer that stays close to CSS
 - No virtual DOM requirement for the basic rendering path
 - A codebase small enough to understand and improve
+
+## A different trade-off
+
+React and Tailwind are capable, mature tools. Redium makes different choices 
+not better ones in every context, but deliberate ones. These tables explain
+where those choices differ and why.
+
+### UI model: Redium vs React
+
+| Concern | Redium | React |
+| --- | --- | --- |
+| Component syntax | Ordinary TypeScript functions returning layout primitives such as `Column`, `Row`, and `Text`. | JSX introduces HTML-like syntax inside JavaScript, usually requiring a compiler transform. |
+| State model | Explicit `State` values `count.value++` with direct subscriptions. Three primitives: `createState`, `createSelector`, `createStore`. | Hooks: `useState`, `useEffect`, `useMemo`, `useCallback`. Powerful, but governed by rules and a render cycle. |
+| Reactivity | Narrowly scoped subscriptions update only what changed. No re-render of the whole component. | Declarative re-renders driven by a reconciler. Fine-grained control is possible but requires memoization. |
+| Composition | Nested function calls with named options. Structure is visible in the call tree. | JSX, props, children, and Context compose well but mix markup, logic, and data in one syntax layer. |
+| Runtime model | Direct DOM elements. No virtual DOM on the basic rendering path. | Virtual DOM reconciliation with a large, well-understood ecosystem of patterns. |
+| Best fit | Small to medium interfaces, prototypes, learning, and developers who prefer explicit primitives over conventions. | Large teams, SSR, ecosystem-heavy products, and established React workflows. |
+
+### Styling approach: Redium vs Tailwind vs CSS
+
+| Concern | Redium | Tailwind CSS | Plain CSS / CSS Modules |
+| --- | --- | --- | --- |
+| Where styles live | Typed style options and `Style` methods sit beside the component that uses them no separate file. | Utility class strings live in markup or JSX alongside the element they style. | Styles live in separate `.css` files and are applied via class names. |
+| How styles are written | TypeScript values: `{ radius: 12, shadow: Shadow.lg }`. No strings, no class names, checked at compile time. | Predefined utility classes: `rounded-xl shadow-lg`. Compact but string-based and opaque to the type system. |  Arbitrary CSS properties in `.css` files. Full power, no constraints, no co-location. |
+| Responsive layout | `min()`, `ratio()`, `clamp()` typed sizing helpers that map to CSS units. | Responsive prefixes on class strings: `md:flex lg:hidden`. | Media queries in CSS files, co-located with nothing. |
+| Customisation | Anything expressible as a TypeScript value. Style is data. | Constrained to the design tokens in `tailwind.config`. Arbitrary values require escape syntax. | Unconstrained. The design system is whatever you write. |
+| Build step required | No. Style is resolved at runtime as typed data. | Yes. A PostCSS build step purges unused classes. | No for plain CSS. Yes for CSS Modules. |
+| Best fit | Projects where style should be readable as data without leaving TypeScript. | Teams with a shared design vocabulary who accept utility-class-heavy markup. | Projects that need full CSS control or already have a design system in `.css` files. |
+
+Redium does not claim that JSX, utility classes, or external CSS are wrong
+choices. Each works well in the right context. Redium's goal is to remove
+those extra syntax layers when direct TypeScript functions and typed style
+values make the interface easier to follow.
 
 ## What Redium is not
 

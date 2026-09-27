@@ -71,10 +71,18 @@ over component defaults. Keep page layout in Row, Column, Grid, and Center.
 
 ## Automatic CSS classes
 
-Redium turns the fully resolved style for every element into a private,
-deterministic CSS class. The class and stylesheet are managed internally: do
-not name classes, write CSS, or attach a provider. Equal resolved styles share
-one generated rule, including styles created by separate components.
+Redium gives every element a stable base class for its built-in layout, plus a
+private deterministic class for its resolved custom styles. For example, a
+root may render as `<div class="r-element r-container r-root r-abc123"
+data-redium="root" data-redium-id="r1">`. The `r-root` class supplies the
+component default; `r-abc123` is created only when an explicit or computed
+style is needed. `data-redium-id` comes from a private runtime identity and
+does not replace an author-provided HTML `id`.
+
+The `data-redium` marker and `r-*` base classes make browser DevTools easier
+to inspect. They are internal implementation details: do not target them from
+application CSS. Equal resolved custom styles still share one generated rule,
+including styles created by separate components.
 
 This also applies to style changes at runtime. Calling a style method replaces
 the element's private class with the class for its new resolved declarations;

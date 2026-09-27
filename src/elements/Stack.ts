@@ -9,10 +9,7 @@ export interface StackOptions extends Omit<ContainerOptions, "row" | "wrap"> {}
 export class StackElement extends ContainerElement {
   constructor(options: StackOptions = {}) {
     super({ ...options, row: false, wrap: false });
-    styles(this.style)
-      .default("display", "grid")
-      .default("grid-template-columns", "minmax(0, 1fr)")
-      .default("grid-template-rows", "minmax(0, 1fr)");
+    this.setElementKind("stack");
     this.refreshLayers();
   }
 

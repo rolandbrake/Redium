@@ -13,10 +13,7 @@ export interface GridOptions extends Omit<ContainerOptions, "row" | "center"> {
 export class GridElement extends ContainerElement {
   constructor(options: GridOptions = {}) {
     super(options);
-    styles(this.style)
-      .default("display", "grid")
-      .default("align-items", "stretch")
-      .default("justify-items", "stretch");
+    this.setElementKind("grid");
     this.setColumns(options.columns ?? 1, options.wrap !== false, options.minColumnWidth);
     this.setRows(options.rows);
     // Container does not create a gap unless one was requested. Avoid
@@ -28,18 +25,19 @@ export class GridElement extends ContainerElement {
     if (!Number.isInteger(columns) || columns < 1) throw new Error("Grid columns must be a positive integer.");
     if (wrap && minColumnWidth !== undefined) {
       const minimum = dimension(minColumnWidth, "Minimum column width");
-      styles(this.style).default("grid-template-columns", `repeat(auto-fit, minmax(min(100%, ${minimum}), 1fr))`);
+      styles(this.style).raw("grid-template-columns", `repeat(auto-fit, minmax(min(100%, ${minimum}), 1fr))`);
     } else {
-      styles(this.style).default("grid-template-columns", `repeat(${columns}, minmax(0, 1fr))`);
+      if (columns === 1 && minColumnWidth === undefined) this.addBaseClasses("r-grid-one");
+      else styles(this.style).raw("grid-template-columns", `repeat(${columns}, minmax(0, 1fr))`);
     }
   }
 
   private setRows(rows?: number): void {
     if (rows !== undefined) {
       if (!Number.isInteger(rows) || rows < 1) throw new Error("Grid rows must be a positive integer.");
-      styles(this.style).default("grid-template-rows", `repeat(${rows}, auto)`);
+      styles(this.style).raw("grid-template-rows", `repeat(${rows}, auto)`);
     } else {
-      styles(this.style).default("grid-auto-rows", "minmax(min-content, max-content)");
+      this.addBaseClasses("r-grid-auto-rows");
     }
   }
 }

@@ -1,5 +1,4 @@
 import { domOf } from "../core/_dom.js";
-import { styles } from "../style/Style.js";
 import { Element, type ElementOptions } from "../core/Element.js";
 import { State } from "../state/State.js";
 export type TextContent = string | number | State<any>;
@@ -8,13 +7,7 @@ export class TextElement extends Element {
     content: TextContent,
     options: ElementOptions = {},
   ) {
-    super("span", options);
-    // Block layout makes width, wrapping, and alignment predictable when
-    // Text is used outside a flex/grid formatting context.
-    styles(this.style)
-      .default("display", "block")
-      .default("white-space", "normal")
-      .default("overflow-wrap", "anywhere");
+    super("span", options, "text");
     if (State.isState(content)) {
       this.text = String(content.value);
       this.onMount(() =>

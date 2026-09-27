@@ -319,7 +319,7 @@ for (const [format, load] of [
         secondDom = dom(second);
       const initial = firstDom.className
         .split(" ")
-        .find((name) => name.startsWith("r-"));
+        .find((name) => !["author-class", "r-element", "r-text"].includes(name));
       assert.ok(initial);
       assert.equal(
         secondDom.className.split(" ").find((name) => name.startsWith("r-")),
@@ -330,29 +330,17 @@ for (const [format, load] of [
       shared.color("blue");
       const updated = firstDom.className
         .split(" ")
-        .find((name) => name.startsWith("r-"));
+        .find((name) => !["author-class", "r-element", "r-text"].includes(name));
       assert.notEqual(updated, initial);
       assert.equal(css(first, "color"), "blue");
     },
   );
-  test(
-    format + ": pre-extracted rules do not create a runtime stylesheet",
-    () => {
-      const key = "box-sizing:border-box;min-width:0";
-      const previous = globalThis.__REDIUM_EXTRACTED_RULES__;
-      const stylesBefore = document.head.children.length;
-      globalThis.__REDIUM_EXTRACTED_RULES__ = { [key]: "r-built" };
-      try {
-        const element = Container();
-        assert.match(dom(element).className, /r-built/);
-        assert.equal(document.head.children.length, stylesBefore);
-      } finally {
-        if (previous === undefined)
-          delete globalThis.__REDIUM_EXTRACTED_RULES__;
-        else globalThis.__REDIUM_EXTRACTED_RULES__ = previous;
-      }
-    },
-  );
+  test(format + ": elements expose stable base classes and DevTools markers", () => {
+    const browserNode = dom(Container());
+    assert.match(browserNode.className, /r-container/);
+    assert.equal(browserNode.getAttribute("data-redium"), "container");
+    assert.match(browserNode.getAttribute("data-redium-id"), /^r\d+$/);
+  });
   test(
     format + ": buttons connect actions and reactive text/disabled values",
     () => {

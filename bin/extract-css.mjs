@@ -135,20 +135,22 @@ function outputScriptPaths(html, outputDirectory) {
     .map((source) => resolve(outputDirectory, source.replace(/^\/+/, "")));
 }
 
-function rulesFrom(document) {
+function stylesFrom(document) {
+  let base = "";
   const rules = new Map();
   for (const style of document.head.children) {
-    if (
-      style.tagName !== "STYLE" ||
-      style.getAttribute("data-redium-styles") === null
-    )
+    if (style.tagName !== "STYLE") continue;
+    if (style.getAttribute("data-redium-base") !== null) {
+      base += style.textContent;
       continue;
+    }
+    if (style.getAttribute("data-redium-styles") === null) continue;
     for (const match of style.textContent.matchAll(/\.([^.{]+)\{([^}]*)\}/g)) {
       const key = match[2];
       rules.set(key, match[1]);
     }
   }
-  return rules;
+  return { base, rules };
 }
 
 export async function extractCss(outputDirectory) {
@@ -172,9 +174,9 @@ export async function extractCss(outputDirectory) {
       await import(`${pathToFileURL(script).href}?redium-css-extraction`);
   }
 
-  const rules = rulesFrom(document);
-  if (!rules.size) return 0;
-  const css = [...rules.entries()]
+  const { base, rules } = stylesFrom(document);
+  if (!base && !rules.size) return 0;
+  const css = base + [...rules.entries()]
     .map(([key, name]) => `.${name}{${key}}`)
     .join("");
   const name = `redium-${createHash("sha256").update(css).digest("hex").slice(0, 8)}.css`;

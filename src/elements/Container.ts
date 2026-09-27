@@ -40,34 +40,25 @@ export class ContainerElement extends Element {
   private readonly centerLayout: boolean;
 
   constructor(options: ContainerOptions = {}) {
-    super("div", options);
+    super("div", options, "container");
     this.rowLayout = options.row === true;
     this.wrapLayout = options.wrap ?? true;
     this.centerLayout = options.center === true;
     this.validateRatio("shrink", options.shrink ?? 1);
     this.validateRatio("grow", options.grow ?? 0);
-    styles(this.style)
-      .default("display", "flex")
-      .default("flex-direction", this.rowLayout ? "row" : "column")
-      .default("flex-wrap", this.wrapLayout ? "wrap" : "nowrap")
-      .default("flex-shrink", String(options.shrink ?? 1))
-      .default("flex-grow", String(options.grow ?? 0))
-      .default("align-items", "stretch")
-      .default("align-content", "stretch");
-    if (this.centerLayout)
-      styles(this.style)
-        .default("justify-content", "center")
-        .default("align-items", "center");
-
-    styles(this.style).default("width", "100%");
+    this.addBaseClasses(
+      this.rowLayout ? "r-row" : "r-column",
+      this.wrapLayout ? "r-wrap" : "r-nowrap",
+      ...(this.centerLayout ? ["r-center"] : []),
+    );
+    if (options.shrink !== undefined) styles(this.style).raw("flex-shrink", String(options.shrink));
+    if (options.grow !== undefined) styles(this.style).raw("flex-grow", String(options.grow));
     this.applySize("width", options.width);
     this.applySize("height", options.height);
     this.applySize("min-width", options.minWidth);
     this.applySize("max-width", options.maxWidth);
     this.applySize("min-height", options.minHeight);
     this.applySize("max-height", options.maxHeight);
-    styles(this.style).default("max-width", "100%");
-    styles(this.style).default("box-sizing", "border-box");
     if (options.gap !== undefined) this.style.gap(options.gap);
     if (options.padding !== undefined) this.style.pad(options.padding);
     if (options.margin !== undefined) this.style.margin(options.margin);
@@ -92,7 +83,7 @@ export class ContainerElement extends Element {
     super.onChildAdded(node);
     if (!(node instanceof Element)) return;
     const isContainer = node instanceof ContainerElement;
-    if (this.rowLayout && isContainer && styles(node.style).value("width") === "100%")
+    if (this.rowLayout && isContainer && styles(node.style).value("width") === undefined)
       styles(node.style).raw("width", "auto");
     if (this.centerLayout)
       styles(node.style)

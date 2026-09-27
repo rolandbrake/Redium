@@ -1,5 +1,4 @@
 import { domOf } from "../core/_dom.js";
-import { styles } from "../style/Style.js";
 import { Element, type ElementOptions } from "../core/Element.js";
 import { State } from "../state/State.js";
 
@@ -19,18 +18,7 @@ export class ButtonElement extends Element {
       typeof textOrOptions === "string" || State.isState(textOrOptions)
         ? { ...options, text: textOrOptions as ButtonText }
         : (textOrOptions ?? {});
-    super("button", opts);
-    styles(this.style)
-      .default("min-width", "5rem")
-      .default("min-height", "2.75rem")
-      .default("padding", "0.625rem 1rem")
-      // Buttons inherit application typography unless the caller supplies a
-      // font, font size, or weight explicitly.
-      .default("font-family", "inherit")
-      .default("font-size", "inherit")
-      .default("font-weight", "inherit")
-      .default("line-height", "1.2")
-      .default("touch-action", "manipulation");
+    super("button", opts, "button");
     if (opts.text !== undefined) this.setText(opts.text);
     if (opts.onClick) this.onClick(opts.onClick.bind(this));
     const disabled = opts.disabled;
