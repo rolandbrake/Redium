@@ -16,13 +16,10 @@ export class RootElement extends ContainerElement {
     this.body = body;
     super.add(this.body);
 
+    //Todo: check this solution later
     styles(this.style)
-      .default("width", "100vw")
-      .default("height", "100vh")
+      .default("min-height", "100vh")
       .default("max-width", "100vw")
-      .default("max-height", "100vh")
-      .default("min-width", "0")
-      .default("min-height", "0")
       .default("overflow-x", "hidden")
       .default("overflow-y", "auto");
   }
@@ -33,7 +30,9 @@ export class RootElement extends ContainerElement {
     return this;
   }
 
-  mountElement(target: HTMLElement = document.body): this { return super.mountElement(target); }
+  mountElement(target: HTMLElement = document.body): this {
+    return super.mountElement(target);
+  }
 }
 
 export type Root = RootElement;
@@ -41,6 +40,9 @@ export interface RootFactory {
   (body: ContainerElement, options?: RootOptions): RootElement;
   new (body: ContainerElement, options?: RootOptions): RootElement;
 }
-export const Root = function(body: ContainerElement, options: RootOptions = {}) {
+export const Root = function (
+  body: ContainerElement,
+  options: RootOptions = {},
+) {
   return new RootElement(body, options);
 } as RootFactory;

@@ -1,28 +1,43 @@
-import { Container, Root, Text } from "redium";
-import { mountElement } from "redium/render";
-import { Colors } from "redium/colors";
+import {
+  Column,
+  Text,
+  Button,
+  createState,
+  mountElement,
+  Root,
+  Center,
+  Align,
+  Border,
+  Colors,
+  ratio,
+} from "redium";
 
-const View = () => {
-  return Container({
-    center: true,
-    style: {
-      height: 0.999999,
-      background: Colors.red,
-    },
-    children: [
-      Text("Hello, Redium!", {
-        style: {
-          padding: [8, 16],
-          background: "#ffc000",
-          radius: 24,
-          color: Colors.white,
-          font: 24,
-          weight: 700,
-        },
-      }),
-    ],
-  });
-};
+export function Counter() {
+  const count = createState(0);
 
-mountElement(Root(View(), { style: { background: Colors.gray } }));
+  return Center(
+    Column({
+      gap: 20,
+      children: [
+        Text(count, {
+          style: {
+            width: ratio(1),
+            //Todo: add alignment to Redium elements 
+            align: Align.center,
+          },
+        }),
+        Button("+", {
+          onClick: () => count.value++,
+          style: {
+            //Todo : add placeholder for none value
+            border: Border(0, Colors.black),
+            background: Colors.aqua,
+            radius: 50,
+          },
+        }),
+      ],
+    }),
+  );
+}
 
+mountElement(Root(Counter()));
